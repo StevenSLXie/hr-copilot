@@ -66,8 +66,10 @@ export const ResumeDropzone = ({
     const files = event.target.files;
     if (!files) return;
 
-    const newFile = files[0];
-    setNewFile(newFile);
+    for (let i = 0; i < files.length; i++){
+      const newFile = files[i];  
+      setNewFile(newFile);
+    }
   };
 
   const onRemove = () => {
