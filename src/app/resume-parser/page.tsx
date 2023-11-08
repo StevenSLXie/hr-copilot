@@ -11,6 +11,7 @@ import { Heading, Link, Paragraph } from "components/documentation";
 import { ResumeTable } from "resume-parser/ResumeTable";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { ResumeParserAlgorithmArticle } from "resume-parser/ResumeParserAlgorithmArticle";
+import { Resume } from "components/Resume";
 
 const RESUME_EXAMPLES = [
   {
@@ -43,6 +44,47 @@ export default function ResumeParser() {
   const sections = groupLinesIntoSections(lines);
   const resume = extractResumeFromSections(sections);
 
+  const handleExportClick = () => {
+    const profile = resume.profile;
+    const csvValue = [];
+    for (const key in profile) {
+      if (profile.hasOwnProperty(key)) {
+        csvValue.push(key + ':' + profile[key] + '\n');
+      }
+    }
+
+    for (let i = 0; i < resume.educations.length; i++){
+      const education = resume.educations[i];
+      csvValue.push('Education ' + i + '\n')
+      console.log(i)
+      for (const key in education) {
+        if (education.hasOwnProperty(key) && key != 'descriptions') {
+          csvValue.push(key + ':' + education[key] + '\n');
+        }
+      }
+    }
+
+    for (let i = 0; i < resume.workExperiences.length; i++){
+      const workExperience = resume.workExperiences[i];
+      csvValue.push('Work ' + i + '\n')
+      console.log(i)
+      for (const key in workExperience) {
+        if (workExperience.hasOwnProperty(key) && key != 'descriptions') {
+          csvValue.push(key + ':' + workExperience[key] + '\n');
+        }
+      }
+    }
+    
+    const blob = new Blob(csvValue.map((data) => new Blob([data], { type: "text/csv" })), { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'table-data.csv';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  };
+  
   useEffect(() => {
     async function test() {
       const textItems = await readPdf(fileUrl);
@@ -117,12 +159,11 @@ export default function ResumeParser() {
             <Heading level={2} className="!mt-[1.2em]">
               Resume Parsing Results
             </Heading>
-            <ResumeTable resume={resume} />
-            <ResumeParserAlgorithmArticle
-              textItems={textItems}
-              lines={lines}
-              sections={sections}
-            />
+            <ResumeTable resume={resume} /> 
+            <button id="exportButton" 
+            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+            style={{ marginTop: '10px' }}
+            onClick={handleExportClick}>Export to CSV</button>
             <div className="pt-24" />
           </section>
         </div>

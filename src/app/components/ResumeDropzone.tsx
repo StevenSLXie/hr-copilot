@@ -168,6 +168,7 @@ export const ResumeDropzone = ({
                   type="file"
                   className="sr-only"
                   accept=".pdf"
+                  multiple
                   onChange={onInputChange}
                 />
               </label>
