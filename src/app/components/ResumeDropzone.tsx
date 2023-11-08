@@ -48,13 +48,17 @@ export const ResumeDropzone = ({
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const newFile = event.dataTransfer.files[0];
-    if (newFile.name.endsWith(".pdf")) {
-      setHasNonPdfFile(false);
-      setNewFile(newFile);
-    } else {
-      setHasNonPdfFile(true);
+    const newFiles = event.dataTransfer.files;
+    for (let i = 0; i < newFiles.length; i++){
+      const newFile = newFiles[i];
+      if (newFile.name.endsWith(".pdf")) {
+        setHasNonPdfFile(false);
+        setNewFile(newFile);
+      } else {
+        setHasNonPdfFile(true);
+      }
     }
+    
     setIsHoveredOnDropzone(false);
   };
 

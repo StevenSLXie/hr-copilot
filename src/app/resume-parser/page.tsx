@@ -45,33 +45,33 @@ export default function ResumeParser() {
   const resume = extractResumeFromSections(sections);
 
   const handleExportClick = () => {
-    const profile = resume.profile;
-    const csvValue = [];
-    for (const key in profile) {
-      if (profile.hasOwnProperty(key)) {
-        csvValue.push(key + ':' + profile[key] + '\n');
-      }
-    }
-
-    for (let i = 0; i < resume.educations.length; i++){
-      const education = resume.educations[i];
-      csvValue.push('Education ' + i + '\n')
-      console.log(i)
-      for (const key in education) {
-        if (education.hasOwnProperty(key) && key != 'descriptions') {
-          csvValue.push(key + ':' + education[key] + '\n');
+          const profile = resume.profile;
+const csvValue = [];
+      for (const key in profile) {
+        if (profile.hasOwnProperty(key)) {
+          csvValue.push(key + ':' + profile[key] + '\n');
         }
+      }
+    
+    for (let i = 0; i < resume.educations.length; i++){
+    const education = resume.educations[i];
+    csvValue.push('Education ' + i + '\n')
+    console.log(i)
+    for (const key in education) {
+    if (education.hasOwnProperty(key) && key != 'descriptions') {
+    csvValue.push(key + ':' + education[key] + '\n');
+    }
       }
     }
 
     for (let i = 0; i < resume.workExperiences.length; i++){
-      const workExperience = resume.workExperiences[i];
-      csvValue.push('Work ' + i + '\n')
-      console.log(i)
-      for (const key in workExperience) {
-        if (workExperience.hasOwnProperty(key) && key != 'descriptions') {
-          csvValue.push(key + ':' + workExperience[key] + '\n');
-        }
+    const workExperience = resume.workExperiences[i];
+    csvValue.push('Work ' + i + '\n')
+    console.log(i)
+    for (const key in workExperience) {
+    if (workExperience.hasOwnProperty(key) && key != 'descriptions') {
+    csvValue.push(key + ':' + workExperience[key] + '\n');
+    }
       }
     }
     
