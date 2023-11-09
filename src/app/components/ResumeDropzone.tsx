@@ -32,6 +32,8 @@ export const ResumeDropzone = ({
   const [isHoveredOnDropzone, setIsHoveredOnDropzone] = useState(false);
   const [hasNonPdfFile, setHasNonPdfFile] = useState(false);
   const router = useRouter();
+  const delimiter = ";;;";
+  let fileUrlConcat = "";
 
   const hasFile = Boolean(file.name);
 
@@ -43,7 +45,7 @@ export const ResumeDropzone = ({
     const { name, size } = newFile;
     const fileUrl = URL.createObjectURL(newFile);
     setFile({ name, size, fileUrl });
-    onFileUrlChange(fileUrl);
+    fileUrlConcat += fileUrl + delimiter;
   };
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -54,6 +56,7 @@ export const ResumeDropzone = ({
       if (newFile.name.endsWith(".pdf")) {
         setHasNonPdfFile(false);
         setNewFile(newFile);
+        onFileUrlChange(fileUrlConcat);
       } else {
         setHasNonPdfFile(true);
       }
@@ -69,6 +72,7 @@ export const ResumeDropzone = ({
     for (let i = 0; i < files.length; i++){
       const newFile = files[i];  
       setNewFile(newFile);
+      onFileUrlChange(fileUrlConcat);
     }
   };
 

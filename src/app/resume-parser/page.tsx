@@ -41,60 +41,45 @@ const defaultFileUrl = RESUME_EXAMPLES[0]["fileUrl"];
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
-  const resumes: ResumeType[] = [];
+  let resumes: ResumeType[] = [];
 
   const handleExportClick = () => {
-      // do the following for every member in resumes 
-      const csvValue: string[] = [];
-      resumes.forEach(resume => {
-        const profile = resume.profile;
-        for (const key in profile) {
-          if (profile.hasOwnProperty(key)) {
-            csvValue.push(key + ':' + profile[key] + '\n');
-          }
-        }
-      });
-    
-    // for (let i = 0; i < resume.educations.length; i++){
-    // const education = resume.educations[i];
-    // csvValue.push('Education ' + i + '\n')
-    // console.log(i)
-    // for (const key in education) {
-    // if (education.hasOwnProperty(key) && key != 'descriptions') {
-    // csvValue.push(key + ':' + education[key] + '\n');
-    // }
-    //   }
-    // }
-
-    // for (let i = 0; i < resume.workExperiences.length; i++){
-    // const workExperience = resume.workExperiences[i];
-    // csvValue.push('Work ' + i + '\n')
-    // console.log(i)
-    // for (const key in workExperience) {
-    // if (workExperience.hasOwnProperty(key) && key != 'descriptions') {
-    // csvValue.push(key + ':' + workExperience[key] + '\n');
-    // }
-    //   }
-    // }
-    
+    const csvValue: string[] = resumes.flatMap(resume => {
+      const profile = resume.profile;
+      return Object.keys(profile).map(key => `${key}:${profile[key]}\n`);
+    });
+  
+    // Uncomment and modify the following sections similarly if needed
+    // const educations = resume.educations.map((education, i) => 
+    //   Object.keys(education).filter(key => key !== 'descriptions').map(key => `Education ${i}:${education[key]}\n`)
+    // );
+    // csvValue = [...csvValue, ...educations];
+  
+    // const workExperiences = resume.workExperiences.map((workExperience, i) => 
+    //   Object.keys(workExperience).filter(key => key !== 'descriptions').map(key => `Work ${i}:${workExperience[key]}\n`)
+    // );
+    // csvValue = [...csvValue, ...workExperiences];
+  
     const blob = new Blob(csvValue.map((data) => new Blob([data], { type: "text/csv" })), { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'table-data.csv';
     a.click();
-
     window.URL.revokeObjectURL(url);
   };
+
   
   useEffect(() => {
     async function test() {
-      const textItems = await readPdf(fileUrl);
-      // setTextItems(textItems);
-      const lines = groupTextItemsIntoLines(textItems || []);
-      const sections = groupLinesIntoSections(lines);
-      resumes.push(extractResumeFromSections(sections));
-      console.log("write into resume");
+      const fileUrls = fileUrl.split(";;;");
+      for (let i = 0; i < fileUrls.length-1; i++){
+        const textItems = await readPdf(fileUrls[i]);
+        // setTextItems(textItems);
+        const lines = groupTextItemsIntoLines(textItems || []);
+        const sections = groupLinesIntoSections(lines);
+        resumes.push(extractResumeFromSections(sections));
+      }
     }
     test();
   }, [fileUrl]);
@@ -157,7 +142,7 @@ export default function ResumeParser() {
             <div className="mt-3">
               <ResumeDropzone
                 onFileUrlChange={(fileUrl) =>
-                  setFileUrl(fileUrl || defaultFileUrl)
+                   setFileUrl(fileUrl || defaultFileUrl)
                 }
                 playgroundView={true}
               />
@@ -169,7 +154,7 @@ export default function ResumeParser() {
             <button id="exportButton" 
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             style={{ marginTop: '10px' }}
-            onClick={handleExportClick}>Export to CSV {resumes.length}</button>
+            onClick={handleExportClick}>Export to CSV </button>
             <div className="pt-24" />
           </section>
         </div>
