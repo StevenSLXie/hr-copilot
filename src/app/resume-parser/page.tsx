@@ -9,6 +9,7 @@ import { ResumeDropzone } from "components/ResumeDropzone";
 import { cx } from "lib/cx";
 import { Heading, Link, Paragraph } from "components/documentation";
 import { ResumeTable } from "resume-parser/ResumeTable";
+import { ResumeDisplay } from "resume-parser/ResumeDisplay";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { ResumeParserAlgorithmArticle } from "resume-parser/ResumeParserAlgorithmArticle";
 import { Resume } from "components/Resume";
@@ -41,7 +42,10 @@ const defaultFileUrl = RESUME_EXAMPLES[0]["fileUrl"];
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
+  // const [resumes, setResumes] = useState<ResumeType[]>([]);
   let resumes: ResumeType[] = [];
+
+  
 
   const handleExportClick = () => {
     const csvValue: string[] = resumes.flatMap(resume => {
@@ -67,6 +71,7 @@ export default function ResumeParser() {
     a.download = 'table-data.csv';
     a.click();
     window.URL.revokeObjectURL(url);
+    
   };
 
   
@@ -78,6 +83,7 @@ export default function ResumeParser() {
         // setTextItems(textItems);
         const lines = groupTextItemsIntoLines(textItems || []);
         const sections = groupLinesIntoSections(lines);
+        // setResumes([...resumes, extractResumeFromSections(sections)]);
         resumes.push(extractResumeFromSections(sections));
       }
     }
@@ -151,10 +157,11 @@ export default function ResumeParser() {
               Resume Parsing Results
             </Heading>
             {/* <ResumeTable resume={resumes[0]} />  */}
+            <ResumeDisplay resumes={resumes} />
             <button id="exportButton" 
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             style={{ marginTop: '10px' }}
-            onClick={handleExportClick}>Export to CSV </button>
+            onClick={handleExportClick}>Export resume to CSV </button>
             <div className="pt-24" />
           </section>
         </div>
