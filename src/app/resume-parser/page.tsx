@@ -42,10 +42,12 @@ const defaultFileUrl = RESUME_EXAMPLES[0]["fileUrl"];
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
-  // const [resumes, setResumes] = useState<ResumeType[]>([]);
-  let resumes: ResumeType[] = [];
+  const [resumes, setResumes] = useState<ResumeType[]>([]);
 
-  
+  const handleUpdateResumes = (sections: any) => {
+    // Update the resumes array
+    setResumes(prevResumes => [...prevResumes, extractResumeFromSections(sections)]);
+  };
 
   const handleExportClick = () => {
     const csvValue: string[] = resumes.flatMap(resume => {
@@ -80,11 +82,9 @@ export default function ResumeParser() {
       const fileUrls = fileUrl.split(";;;");
       for (let i = 0; i < fileUrls.length-1; i++){
         const textItems = await readPdf(fileUrls[i]);
-        // setTextItems(textItems);
         const lines = groupTextItemsIntoLines(textItems || []);
         const sections = groupLinesIntoSections(lines);
-        // setResumes([...resumes, extractResumeFromSections(sections)]);
-        resumes.push(extractResumeFromSections(sections));
+        handleUpdateResumes(sections);
       }
     }
     test();
@@ -161,7 +161,7 @@ export default function ResumeParser() {
             <button id="exportButton" 
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             style={{ marginTop: '10px' }}
-            onClick={handleExportClick}>Export resume to CSV </button>
+            onClick={handleExportClick}>Export {resumes.length} resume to CSV </button>
             <div className="pt-24" />
           </section>
         </div>
