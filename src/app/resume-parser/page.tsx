@@ -104,7 +104,7 @@ export default function ResumeParser() {
         {/* <div className="h-[calc(100vh-var(--top-nav-bar-height))]"></div> */}
         <div className="flex px-6 text-gray-900 md:col-span-3 md:h-[calc(100vh-var(--top-nav-bar-height))] md:overflow-y-scroll">
           <FlexboxSpacer maxWidth={45} className="hidden md:block" />
-          <section className="max-w-[600px] grow">
+          <section className="max-w-[1200px] grow">
             <Heading className="text-primary !mt-4">
               Resume Parser Playground
             </Heading>
