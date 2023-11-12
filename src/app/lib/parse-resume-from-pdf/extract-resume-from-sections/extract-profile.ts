@@ -12,6 +12,13 @@ import {
   hasLetterAndIsAllUpperCase,
 } from "lib/parse-resume-from-pdf/extract-resume-from-sections/lib/common-features";
 import { getTextWithHighestFeatureScore } from "lib/parse-resume-from-pdf/extract-resume-from-sections/lib/feature-scoring-system";
+import i18nIsoCountries from "i18n-iso-countries";
+i18nIsoCountries.registerLocale(require("i18n-iso-countries/langs/en.json"));
+
+const validateCountryName = (name: string): string[] | null => {
+  const countries = Object.values(i18nIsoCountries.getNames('en'));
+  return countries.includes(name) ? [name] : null;
+};
 
 // Name
 export const matchOnlyLetterSpaceOrPeriod = (item: TextItem) =>
@@ -32,8 +39,14 @@ const hasParenthesis = (item: TextItem) => /\([0-9]+\)/.test(item.text);
 
 // Location
 // Simple location regex that matches "<City>, <ST>"
-export const matchCityAndState = (item: TextItem) =>
-  item.text.match(/[A-Z][a-zA-Z\s]+, [A-Z]{2}/);
+export const matchCityAndState = (item: TextItem): RegExpMatchArray | null => {
+  const match = item.text.match(/[A-Z][a-zA-Z\s]+, [A-Z]{2}/);
+  if (match) {
+    return match;
+  }
+  const countryName = validateCountryName(item.text);
+  return countryName ? [countryName[0]] : null;
+};
 
 // Url
 // Simple url regex that matches "xxx.xxx/xxx" (xxx = anything not space)

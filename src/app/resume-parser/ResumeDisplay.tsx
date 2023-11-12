@@ -23,6 +23,9 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             Location
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Summary
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Experience
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -44,6 +47,9 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             </td>
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.profile.location || ""}
+            </td>
+            <td className="px-6 py-4 text-sm text-gray-500">
+                {resume.profile.summary || ""}
             </td>
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.workExperiences[0]?.company && resume.workExperiences[0]?.date && resume.workExperiences[0]?.title 
