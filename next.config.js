@@ -11,6 +11,9 @@ const nextConfig = {
     // https://webpack.js.org/configuration/resolve/#resolvealias
     config.resolve.alias.canvas = false;
     config.resolve.alias.encoding = false;
+
+    // Add this line to change the pages directory
+    //config.resolve.alias['~'] = path.resolve(__dirname, 'src/app');
     return config;
   },
 };

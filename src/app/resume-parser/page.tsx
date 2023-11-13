@@ -39,14 +39,36 @@ const RESUME_EXAMPLES = [
 ];
 
 const defaultFileUrl = RESUME_EXAMPLES[0]["fileUrl"];
+
+// Client-side code
+async function callGpt(text: string) {
+  console.time('callGpt Execution Time');
+  const response = await fetch('/api/callGpt', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ text }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to parse resume');
+  }
+  const jsonResponse = await response.json();
+  console.log(`Response content: ${jsonResponse}`);
+  const resumeContent = jsonResponse['text']['message']['content'];
+  const resume: ResumeType = JSON.parse(resumeContent);
+  console.log(resume.profile.name);
+  console.timeEnd('callGpt Execution Time');
+  return resume;
+}
+
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
   const [resumes, setResumes] = useState<ResumeType[]>([]);
 
-  const handleUpdateResumes = (sections: any) => {
-    // Update the resumes array
-    setResumes(prevResumes => [...prevResumes, extractResumeFromSections(sections)]);
+  const handleUpdateResumes = (resume: ResumeType) => {
+    setResumes(prevResumes => [...prevResumes, resume]);
   };
 
   const handleExportClick = () => {
@@ -54,17 +76,6 @@ export default function ResumeParser() {
       const profile = resume.profile;
       return Object.keys(profile).map(key => `${key}:${profile[key]}\n`);
     });
-  
-    // Uncomment and modify the following sections similarly if needed
-    // const educations = resume.educations.map((education, i) => 
-    //   Object.keys(education).filter(key => key !== 'descriptions').map(key => `Education ${i}:${education[key]}\n`)
-    // );
-    // csvValue = [...csvValue, ...educations];
-  
-    // const workExperiences = resume.workExperiences.map((workExperience, i) => 
-    //   Object.keys(workExperience).filter(key => key !== 'descriptions').map(key => `Work ${i}:${workExperience[key]}\n`)
-    // );
-    // csvValue = [...csvValue, ...workExperiences];
   
     const blob = new Blob(csvValue.map((data) => new Blob([data], { type: "text/csv" })), { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -76,15 +87,17 @@ export default function ResumeParser() {
     
   };
 
-  
   useEffect(() => {
     async function test() {
       const fileUrls = fileUrl.split(";;;");
       for (let i = 0; i < fileUrls.length-1; i++){
         const textItems = await readPdf(fileUrls[i]);
         const lines = groupTextItemsIntoLines(textItems || []);
-        const sections = groupLinesIntoSections(lines);
-        handleUpdateResumes(sections);
+        const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join(' ');
+        const resume = await callGpt(concatenatedString);
+        // console.log(JSON.stringify(parsedSections, null, 2));
+        // const sections = groupLinesIntoSections(lines);
+        handleUpdateResumes(resume);
       }
     }
     test();

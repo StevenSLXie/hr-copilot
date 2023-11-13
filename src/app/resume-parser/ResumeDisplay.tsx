@@ -52,8 +52,8 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
                 {resume.profile.summary || ""}
             </td>
             <td className="px-6 py-4 text-sm text-gray-500">
-                {resume.workExperiences[0]?.company && resume.workExperiences[0]?.date && resume.workExperiences[0]?.title 
-                    ? `${resume.workExperiences[0].company} , ${resume.workExperiences[0].date} , ${resume.workExperiences[0].title}` 
+                {resume.workExperiences[0]?.company && resume.workExperiences[0]?.date && resume.workExperiences[0]?.jobTitle 
+                    ? `${resume.workExperiences[0].company} , ${resume.workExperiences[0].date} , ${resume.workExperiences[0].jobTitle}` 
                     : ""}
             </td>
             <td className="px-6 py-4 text-sm text-gray-500">
