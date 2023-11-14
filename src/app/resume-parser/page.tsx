@@ -55,7 +55,7 @@ async function callGpt(text: string) {
   }
   const jsonResponse = await response.json();
   console.log(`Response content: ${jsonResponse}`);
-  const resumeContent = jsonResponse['text']['message']['content'];
+  const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
   const resume: ResumeType = JSON.parse(resumeContent);
   console.log(resume.profile.name);
   console.timeEnd('callGpt Execution Time');
@@ -90,13 +90,14 @@ export default function ResumeParser() {
   useEffect(() => {
     async function test() {
       const fileUrls = fileUrl.split(";;;");
+      if (fileUrls.length >= 4) {
+        return;
+      }
       for (let i = 0; i < fileUrls.length-1; i++){
         const textItems = await readPdf(fileUrls[i]);
         const lines = groupTextItemsIntoLines(textItems || []);
         const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join(' ');
         const resume = await callGpt(concatenatedString);
-        // console.log(JSON.stringify(parsedSections, null, 2));
-        // const sections = groupLinesIntoSections(lines);
         handleUpdateResumes(resume);
       }
     }
@@ -106,50 +107,12 @@ export default function ResumeParser() {
   return (
     <main className="h-full w-full overflow-hidden">
       <div className="grid md:grid-cols-2">
-        {/* <div className="flex justify-center px-2 md:col-span-3 md:h-[calc(100vh-var(--top-nav-bar-height))] md:justify-end">
-          <section className="mt-5 grow px-4 md:max-w-[600px] md:px-0">
-            <div className="aspect-h-[9.5] aspect-w-7">
-              <iframe src={`${fileUrl}#navpanes=0`} className="h-full w-full" />
-            </div>
-          </section>
-          <FlexboxSpacer maxWidth={45} className="hidden md:block" />
-        </div> */}
-        {/* <div className="h-[calc(100vh-var(--top-nav-bar-height))]"></div> */}
         <div className="flex px-6 text-gray-900 md:col-span-3 md:h-[calc(100vh-var(--top-nav-bar-height))] md:overflow-y-scroll">
           <FlexboxSpacer maxWidth={45} className="hidden md:block" />
           <section className="max-w-[1200px] grow">
             <Heading className="text-primary !mt-4">
               Resume Parser Playground
             </Heading>
-            <Paragraph smallMarginTop={true}>
-              This playground showcases the OpenResume resume parser and its
-              ability to parse information from a resume PDF. Click around the
-              PDF examples below to observe different parsing results.
-            </Paragraph>
-            <div className="mt-3 flex gap-3">
-              {RESUME_EXAMPLES.map((example, idx) => (
-                <article
-                  key={idx}
-                  className={cx(
-                    "flex-1 cursor-pointer rounded-md border-2 px-4 py-3 shadow-sm outline-none hover:bg-gray-50 focus:bg-gray-50",
-                    example.fileUrl === fileUrl
-                      ? "border-blue-400"
-                      : "border-gray-300"
-                  )}
-                  onClick={() => setFileUrl(example.fileUrl)}
-                  onKeyDown={(e) => {
-                    if (["Enter", " "].includes(e.key))
-                      setFileUrl(example.fileUrl);
-                  }}
-                  tabIndex={0}
-                >
-                  <h1 className="font-semibold">Resume Example {idx + 1}</h1>
-                  <p className="mt-2 text-sm text-gray-500">
-                    {example.description}
-                  </p>
-                </article>
-              ))}
-            </div>
             <Paragraph>
               You can also{" "}
               <span className="font-semibold">add your resume below</span> to

@@ -26,6 +26,6 @@
       "*": ["*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/callGpt.js", "src/app/api/callGpt.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/pages/api/callGpt.js", "src/app/pages/api/callGpt.js"],
   "exclude": ["node_modules"]
 }

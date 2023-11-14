@@ -44,14 +44,15 @@ export default async function handler(req, res) {
       messages: [
         {
           "role": "system", 
-          "content": "The following text is extracted from a resume; parse them into the following format:" + JSON.stringify(prompt)
+          "content": "The following text is extracted from a resume; parse them into the following format:" 
+          + JSON.stringify(prompt) + ". You must return in the prescribed format."
         },
         {
           "role": "user", 
           "content": JSON.stringify(req.body.text)
         }
       ],
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo-0301", //"gpt-3.5-turbo", //"gpt-4-1106-preview", //
     });
     // console.log('completion from server' + completion.choices[0].text);
     console.log(completion.choices[0])
