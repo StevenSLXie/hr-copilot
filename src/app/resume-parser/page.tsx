@@ -1,44 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import { readPdf } from "lib/parse-resume-from-pdf/read-pdf";
-import type { TextItems } from "lib/parse-resume-from-pdf/types";
 import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-items-into-lines";
-import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
-import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
 import { ResumeDropzone } from "components/ResumeDropzone";
-import { cx } from "lib/cx";
 import { Heading, Link, Paragraph } from "components/documentation";
-import { ResumeTable } from "resume-parser/ResumeTable";
 import { ResumeDisplay } from "resume-parser/ResumeDisplay";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
-import { ResumeParserAlgorithmArticle } from "resume-parser/ResumeParserAlgorithmArticle";
-import { Resume } from "components/Resume";
 import type { Resume as ResumeType } from "lib/redux/types";
 
-const RESUME_EXAMPLES = [
-  {
-    fileUrl: "resume-example/laverne-resume.pdf",
-    description: (
-      <span>
-        Borrowed from University of La Verne Career Center -{" "}
-        <Link href="https://laverne.edu/careers/wp-content/uploads/sites/15/2010/12/Undergraduate-Student-Resume-Examples.pdf">
-          Link
-        </Link>
-      </span>
-    ),
-  },
-  {
-    fileUrl: "resume-example/openresume-resume.pdf",
-    description: (
-      <span>
-        Created with OpenResume resume builder -{" "}
-        <Link href="/resume-builder">Link</Link>
-      </span>
-    ),
-  },
-];
 
-const defaultFileUrl = RESUME_EXAMPLES[0]["fileUrl"];
+const defaultFileUrl = "";
 
 // Client-side code
 async function callGpt(text: string) {
@@ -64,7 +35,6 @@ async function callGpt(text: string) {
 
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
-  const [textItems, setTextItems] = useState<TextItems>([]);
   const [resumes, setResumes] = useState<ResumeType[]>([]);
 
   const handleUpdateResumes = (resume: ResumeType) => {
@@ -115,12 +85,8 @@ export default function ResumeParser() {
             </Heading>
             <Paragraph>
               You can also{" "}
-              <span className="font-semibold">add your resume below</span> to
-              access how well your resume would be parsed by similar Application
-              Tracking Systems (ATS) used in job applications. The more
-              information it can parse out, the better it indicates the resume
-              is well formatted and easy to read. It is beneficial to have the
-              name and email accurately parsed at the very least.
+              <span className="font-semibold">add your PDF resume(s) below</span> to
+              batch process them and display the aggregated information in a table
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -133,12 +99,11 @@ export default function ResumeParser() {
             <Heading level={2} className="!mt-[1.2em]">
               Resume Parsing Results
             </Heading>
-            {/* <ResumeTable resume={resumes[0]} />  */}
             <ResumeDisplay resumes={resumes} />
             <button id="exportButton" 
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             style={{ marginTop: '10px' }}
-            onClick={handleExportClick}>Export {resumes.length} resume to CSV </button>
+            onClick={handleExportClick}>Export {resumes.length} resumes to CSV </button>
             <div className="pt-24" />
           </section>
         </div>

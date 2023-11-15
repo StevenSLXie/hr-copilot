@@ -19,7 +19,7 @@ export const TopNavBar = () => {
     >
       <div className="flex h-10 w-full items-center justify-between">
         <Link href="/">
-          <span className="sr-only">OpenResume</span>
+          <span className="sr-only">HR Copilot</span>
           <Image
             src={logoSrc}
             alt="OpenResume Logo"
@@ -32,7 +32,6 @@ export const TopNavBar = () => {
           className="flex items-center gap-2 text-sm font-medium"
         >
           {[
-            ["/resume-builder", "Builder"],
             ["/resume-parser", "Parser"],
           ].map(([href, text]) => (
             <Link
@@ -43,15 +42,6 @@ export const TopNavBar = () => {
               {text}
             </Link>
           ))}
-          <div className="ml-1 mt-1">
-            <iframe
-              src="https://ghbtns.com/github-btn.html?user=xitanggg&repo=open-resume&type=star&count=true"
-              width="100"
-              height="20"
-              className="overflow-hidden border-none"
-              title="GitHub"
-            />
-          </div>
         </nav>
       </div>
     </header>
