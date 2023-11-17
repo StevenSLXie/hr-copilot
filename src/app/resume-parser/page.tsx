@@ -7,6 +7,8 @@ import { Heading, Link, Paragraph } from "components/documentation";
 import { ResumeDisplay } from "resume-parser/ResumeDisplay";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import type { Resume as ResumeType } from "lib/redux/types";
+import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
+import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 
 
 const defaultFileUrl = "";
@@ -66,8 +68,10 @@ export default function ResumeParser() {
       for (let i = 0; i < fileUrls.length-1; i++){
         const textItems = await readPdf(fileUrls[i]);
         const lines = groupTextItemsIntoLines(textItems || []);
-        const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join(' ');
-        const resume = await callGpt(concatenatedString);
+        const sections = groupLinesIntoSections(lines || []);
+        const resume = extractResumeFromSections(sections);
+        // const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join(' ');
+        // const resume = await callGpt(concatenatedString);
         handleUpdateResumes(resume);
       }
     }
