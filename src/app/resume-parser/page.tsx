@@ -70,7 +70,8 @@ export default function ResumeParser() {
         const lines = groupTextItemsIntoLines(textItems || []);
         const sections = groupLinesIntoSections(lines || []);
         const resume = extractResumeFromSections(sections);
-        // const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join(' ');
+        const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join('\n');
+        console.log(concatenatedString);
         // const resume = await callGpt(concatenatedString);
         handleUpdateResumes(resume);
       }
