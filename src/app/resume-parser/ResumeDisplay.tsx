@@ -54,10 +54,10 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <td className="px-6 py-4 text-sm text-gray-500">
             {resume.workExperiences.map((workExperience, index) => {
                 return workExperience.company || workExperience.date || workExperience.jobTitle 
-                ? `${workExperience.company}  ${workExperience.date}  ${workExperience.jobTitle}` 
+                ? `<strong>${workExperience.company}</strong>  ${workExperience.date}  ${workExperience.jobTitle}` 
                 : "";
             }).join("\n").split('\n').map((item, key) => {
-                return <span key={key}>{item}<br/><br/></span>
+                return <><span key={key} dangerouslySetInnerHTML={{ __html: item }} /><br /><br /></>
             })}
             </td>
             

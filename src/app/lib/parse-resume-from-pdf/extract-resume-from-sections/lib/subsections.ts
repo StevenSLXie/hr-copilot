@@ -11,20 +11,9 @@ import type { Lines, Line, Subsections } from "lib/parse-resume-from-pdf/types";
  * schools or work experiences in the section. The feature scoring system then
  * process each subsection to retrieve each's resume attributes and append the results.
  */
-export const divideSectionIntoSubsections = (lines: Lines): Subsections => {
-  // The main heuristic to determine a subsection is to check if its vertical line gap
-  // is larger than the typical line gap * 1.4
-  // const isLineNewSubsectionByLineGap =
-  //   createIsLineNewSubsectionByLineGap(lines);
 
-  // let subsections = createSubsections(lines, isLineNewSubsectionByLineGap);
-
-  // Fallback heuristic if the main heuristic doesn't apply to check if the text item is bolded
-  // if (subsections.length === 1) {
-    
-  // }
-
-  const isLineNewSubsectionByBold = (line: Line, prevLine: Line) => {
+export const divideSectionIntoSubsections = (lines: Lines, keywords: string[]): Subsections => {
+  const isLineNewSubsectionByRules = (line: Line, prevLine: Line, keywords: string[]) => {
     if (
       !isBold(prevLine[0]) &&
       isBold(line[0]) &&
@@ -32,47 +21,25 @@ export const divideSectionIntoSubsections = (lines: Lines): Subsections => {
       !BULLET_POINTS.includes(line[0].text)
     ) {
       return true;
-    }
+    } else if (
+      keywords.some((keyword) => line[0].text.toLowerCase().includes(keyword))
+    ) {
+    return true;
+  } else {
     return false;
-  };
+  }};
 
-  let subsections = createSubsections(lines, isLineNewSubsectionByBold);
+  let subsections = createSubsections(lines, isLineNewSubsectionByRules, keywords);
 
   return subsections;
 };
 
-type IsLineNewSubsection = (line: Line, prevLine: Line) => boolean;
-
-const createIsLineNewSubsectionByLineGap = (
-  lines: Lines
-): IsLineNewSubsection => {
-  // Extract the common typical line gap
-  const lineGapToCount: { [lineGap: number]: number } = {};
-  const linesY = lines.map((line) => line[0].y);
-  let lineGapWithMostCount: number = 0;
-  let maxCount = 0;
-  for (let i = 1; i < linesY.length; i++) {
-    const lineGap = Math.round(linesY[i - 1] - linesY[i]);
-    if (!lineGapToCount[lineGap]) lineGapToCount[lineGap] = 0;
-    lineGapToCount[lineGap] += 1;
-    if (lineGapToCount[lineGap] > maxCount) {
-      lineGapWithMostCount = lineGap;
-      maxCount = lineGapToCount[lineGap];
-    }
-  }
-  // Use common line gap to set a sub section threshold
-  const subsectionLineGapThreshold = lineGapWithMostCount * 1.4;
-
-  const isLineNewSubsection = (line: Line, prevLine: Line) => {
-    return Math.round(prevLine[0].y - line[0].y) > subsectionLineGapThreshold;
-  };
-
-  return isLineNewSubsection;
-};
+type IsLineNewSubsection = (line: Line, prevLine: Line, keywords: string[]) => boolean;
 
 const createSubsections = (
   lines: Lines,
-  isLineNewSubsection: IsLineNewSubsection
+  isLineNewSubsection: IsLineNewSubsection,
+  keywords: string[]
 ): Subsections => {
   const subsections: Subsections = [];
   let subsection: Lines = [];
@@ -82,7 +49,7 @@ const createSubsections = (
       subsection.push(line);
       continue;
     }
-    if (isLineNewSubsection(line, lines[i - 1])) {
+    if (isLineNewSubsection(line, lines[i - 1], keywords)) {
       subsections.push(subsection);
       subsection = [];
     }

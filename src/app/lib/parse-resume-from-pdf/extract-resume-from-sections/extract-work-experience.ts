@@ -23,6 +23,8 @@ const WORK_EXPERIENCE_KEYWORDS_LOWERCASE = ['work', 'experience', 'employment', 
 // prettier-ignore
 const JOB_TITLES = ['Accountant', 'Administrator', 'Advisor', 'Agent', 'Analyst', 'Apprentice', 'Architect', 'Assistant', 'Associate', 'Auditor', 'Bartender', 'Biologist', 'Bookkeeper', 'Buyer', 'Carpenter', 'Cashier', 'CEO', 'Clerk', 'Co-op', 'Co-Founder', 'Consultant', 'Coordinator', 'CTO', 'Developer', 'Designer', 'Director', 'Driver', 'Editor', 'Electrician', 'Engineer', 'Extern', 'Founder', 'Freelancer', 'Head', 'Intern', 'Janitor', 'Journalist', 'Laborer', 'Lawyer', 'Lead', 'Manager', 'Mechanic', 'Member', 'Nurse', 'Officer', 'Operator', 'Operation', 'Photographer', 'President', 'Producer', 'Recruiter', 'Representative', 'Researcher', 'Sales', 'Server', 'Scientist', 'Specialist', 'Supervisor', 'Teacher', 'Technician', 'Trader', 'Trainee', 'Treasurer', 'Tutor', 'Vice', 'VP', 'Volunteer', 'Webmaster', 'Worker'];
 
+const COMPANY_KEYWORDS = ['company', 'ptd', 'ltd', 'co.', 'center', 'centre', 'corporation'];
+
 const hasJobTitle = (item: TextItem) =>
   JOB_TITLES.some((jobTitle) =>
     item.text.split(/\s/).some((word) => word === jobTitle)
@@ -42,7 +44,7 @@ export const extractWorkExperience = (sections: ResumeSectionToLines) => {
     WORK_EXPERIENCE_KEYWORDS_LOWERCASE
   );
   // debug: already catch the lines - 20231118
-  const subsections = divideSectionIntoSubsections(lines);
+  const subsections = divideSectionIntoSubsections(lines, COMPANY_KEYWORDS);
 
   for (const subsectionLines of subsections) {
     const descriptionsLineIdx = getDescriptionsLineIdx(subsectionLines) ?? 2;
