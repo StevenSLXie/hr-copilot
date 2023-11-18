@@ -51,11 +51,13 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.profile.summary || ""}
             </td>
-            <td className="px-6 py-4 text-sm text-gray-500">
-                {resume.workExperiences[0]?.company && resume.workExperiences[0]?.date && resume.workExperiences[0]?.jobTitle 
-                    ? `${resume.workExperiences[0].company} , ${resume.workExperiences[0].date} , ${resume.workExperiences[0].jobTitle}` 
-                    : ""}
+            {resume.workExperiences.map((workExperience, index) => (
+            <td key={index} className="px-6 py-4 text-sm text-gray-500">
+                {workExperience.company && workExperience.date && workExperience.jobTitle 
+                ? `${workExperience.company} , ${workExperience.date} , ${workExperience.jobTitle}` 
+                : ""}
             </td>
+            ))}
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.educations[0]?.school && resume.educations[0]?.degree ? `${resume.educations[0].school} , ${resume.educations[0].degree}` : ""}
             </td>

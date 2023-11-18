@@ -14,27 +14,29 @@ import type { Lines, Line, Subsections } from "lib/parse-resume-from-pdf/types";
 export const divideSectionIntoSubsections = (lines: Lines): Subsections => {
   // The main heuristic to determine a subsection is to check if its vertical line gap
   // is larger than the typical line gap * 1.4
-  const isLineNewSubsectionByLineGap =
-    createIsLineNewSubsectionByLineGap(lines);
+  // const isLineNewSubsectionByLineGap =
+  //   createIsLineNewSubsectionByLineGap(lines);
 
-  let subsections = createSubsections(lines, isLineNewSubsectionByLineGap);
+  // let subsections = createSubsections(lines, isLineNewSubsectionByLineGap);
 
   // Fallback heuristic if the main heuristic doesn't apply to check if the text item is bolded
-  if (subsections.length === 1) {
-    const isLineNewSubsectionByBold = (line: Line, prevLine: Line) => {
-      if (
-        !isBold(prevLine[0]) &&
-        isBold(line[0]) &&
-        // Ignore bullet points that sometimes being marked as bolded
-        !BULLET_POINTS.includes(line[0].text)
-      ) {
-        return true;
-      }
-      return false;
-    };
+  // if (subsections.length === 1) {
+    
+  // }
 
-    subsections = createSubsections(lines, isLineNewSubsectionByBold);
-  }
+  const isLineNewSubsectionByBold = (line: Line, prevLine: Line) => {
+    if (
+      !isBold(prevLine[0]) &&
+      isBold(line[0]) &&
+      // Ignore bullet points that sometimes being marked as bolded
+      !BULLET_POINTS.includes(line[0].text)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  let subsections = createSubsections(lines, isLineNewSubsectionByBold);
 
   return subsections;
 };

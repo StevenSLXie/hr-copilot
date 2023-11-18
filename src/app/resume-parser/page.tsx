@@ -71,7 +71,14 @@ export default function ResumeParser() {
         const sections = groupLinesIntoSections(lines || []);
         const resume = extractResumeFromSections(sections);
         const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join('\n');
-        console.log(concatenatedString);
+        // console.log(concatenatedString);
+        for (const key in sections) {
+          if (sections.hasOwnProperty(key)) {
+            console.log(key, sections[key].map(line => line.map(item => item.text).join(' ')));
+          }
+        }
+        console.log(resume.workExperiences[0].company);
+        console.log(resume.workExperiences[0].jobTitle);
         // const resume = await callGpt(concatenatedString);
         handleUpdateResumes(resume);
       }

@@ -41,7 +41,11 @@ export const extractWorkExperience = (sections: ResumeSectionToLines) => {
     sections,
     WORK_EXPERIENCE_KEYWORDS_LOWERCASE
   );
+  // debug: already catch the lines - 20231118
   const subsections = divideSectionIntoSubsections(lines);
+  for (const subsection of subsections) {
+    console.log(subsection);
+  }
 
   for (const subsectionLines of subsections) {
     const descriptionsLineIdx = getDescriptionsLineIdx(subsectionLines) ?? 2;
