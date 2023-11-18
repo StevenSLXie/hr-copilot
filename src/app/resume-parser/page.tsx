@@ -62,9 +62,7 @@ export default function ResumeParser() {
   useEffect(() => {
     async function test() {
       const fileUrls = fileUrl.split(";;;");
-      if (fileUrls.length >= 4) {
-        return;
-      }
+      
       for (let i = 0; i < fileUrls.length-1; i++){
         const textItems = await readPdf(fileUrls[i]);
         const lines = groupTextItemsIntoLines(textItems || []);
