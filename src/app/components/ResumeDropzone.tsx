@@ -146,13 +146,14 @@ export const ResumeDropzone = ({
             </p>
             <p className="flex text-sm text-gray-500">
               <LockClosedIcon className="mr-1 mt-1 h-3 w-3 text-gray-400" />
-              File data is never stored by us
+              Your data are never stored by us
             </p>
           </>
         ) : (
           <div className="flex items-center justify-center gap-3 pt-3">
             <div className="pl-7 font-semibold text-gray-900">
-              {file.name} - {getFileSizeString(file.size)}
+              {/* {file.name} - {getFileSizeString(file.size)} */}
+              All resumes uploaded and parsed into the table below
             </div>
             <button
               type="button"
