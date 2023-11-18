@@ -22,9 +22,9 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Location
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Summary
-            </th>
+            </th> */}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Experience
             </th>
@@ -48,18 +48,27 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.profile.location || ""}
             </td>
-            <td className="px-6 py-4 text-sm text-gray-500">
+            {/* <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.profile.summary || ""}
-            </td>
-            {resume.workExperiences.map((workExperience, index) => (
-            <td key={index} className="px-6 py-4 text-sm text-gray-500">
-                {workExperience.company && workExperience.date && workExperience.jobTitle 
-                ? `${workExperience.company} , ${workExperience.date} , ${workExperience.jobTitle}` 
-                : ""}
-            </td>
-            ))}
+            </td> */}
             <td className="px-6 py-4 text-sm text-gray-500">
-                {resume.educations[0]?.school && resume.educations[0]?.degree ? `${resume.educations[0].school} , ${resume.educations[0].degree}` : ""}
+            {resume.workExperiences.map((workExperience, index) => {
+                return workExperience.company || workExperience.date || workExperience.jobTitle 
+                ? `${workExperience.company}  ${workExperience.date}  ${workExperience.jobTitle}` 
+                : "";
+            }).join("\n").split('\n').map((item, key) => {
+                return <span key={key}>{item}<br/><br/></span>
+            })}
+            </td>
+            
+            <td className="px-6 py-4 text-sm text-gray-500">
+            {resume.educations.map((education, index) => {
+                return education.school || education.degree || education.date 
+                ? `${education.school}  ${education.degree}  ${education.date}` 
+                : "";
+            }).join("\n").split('\n').map((item, key) => {
+                return <span key={key}>{item}<br/><br/></span>
+            })}
             </td>
             
             </tr>
