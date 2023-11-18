@@ -38,26 +38,40 @@ async function callGpt(text: string) {
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [resumes, setResumes] = useState<ResumeType[]>([]);
+  const [message, setMessage] = useState("");
 
   const handleUpdateResumes = (resume: ResumeType) => {
     setResumes(prevResumes => [...prevResumes, resume]);
   };
 
-  const handleExportClick = () => {
-    const csvValue: string[] = resumes.flatMap(resume => {
-      const profile = resume.profile;
-      return Object.keys(profile).map(key => `${key}:${profile[key]}\n`);
-    });
-  
-    const blob = new Blob(csvValue.map((data) => new Blob([data], { type: "text/csv" })), { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'table-data.csv';
-    a.click();
-    window.URL.revokeObjectURL(url);
-    
+  const copyTableToClipboard = async () => {
+    const table = document.getElementById("resumeDisplay");
+    if (!table) return;
+
+    // Get all the rows of the table
+    const rows = table.querySelectorAll("tr");
+    // Initialize an empty array to hold the CSV data
+    const csv = [];
+    // Loop through each row
+    for (const row of rows) {
+      // Get all the cells in the row
+      const cells = row.querySelectorAll("td, th");
+      // Get the text content of each cell and add it to the csv array
+      csv.push([...cells].map(cell => cell.textContent ? `"${cell.textContent.replace(/"/g, '""')}"` : "").join(","));
+    }
+    // Join all the rows with newline characters to form the CSV string
+    const csvString = csv.join("\n");
+    try {
+      // Copy the CSV string to the clipboard
+      await navigator.clipboard.writeText(csvString);
+      console.log('Table copied to clipboard');
+      setMessage("Table copied to clipboard; paste it in a spreadsheet (e.g., Excel)");  // Set the message
+    } catch (err) {
+      console.error('Failed to copy table: ', err);
+      setMessage("Failed to copy table to clipboard");
+    }
   };
+
 
   useEffect(() => {
     async function test() {
@@ -99,15 +113,20 @@ export default function ResumeParser() {
                 playgroundView={true}
               />
             </div>
-            <Heading level={2} className="!mt-[1.2em]">
+            <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
             </Heading>
-            <ResumeDisplay resumes={resumes} />
-            <button id="exportButton" 
-            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-            style={{ marginTop: '10px' }}
-            onClick={handleExportClick}>Export {resumes.length} resumes to CSV </button>
-            <div className="pt-24" />
+            <div id="resumeDisplay">
+              <ResumeDisplay resumes={resumes} />
+            </div>
+            <div>
+              <button 
+                id="exportButton" 
+                className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+                style={{ marginTop: '20px' }}
+                onClick={copyTableToClipboard}>Copy Table</button>
+              <p>{message}</p>
+            </div>            
           </section>
         </div>
       </div>
