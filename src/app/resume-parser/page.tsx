@@ -98,7 +98,7 @@ export default function ResumeParser() {
           <FlexboxSpacer maxWidth={45} className="hidden md:block" />
           <section className="max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume Parser Playground
+              Resume Parser 
             </Heading>
             <Paragraph>
               You can {" "}

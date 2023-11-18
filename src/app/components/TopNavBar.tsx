@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import Head from 'next/head';
 import logoSrc from "public/logo.svg";
 import { cx } from "lib/cx";
 
@@ -22,7 +23,7 @@ export const TopNavBar = () => {
           <span className="sr-only">HR Copilot</span>
           <Image
             src={logoSrc}
-            alt="OpenResume Logo"
+            alt="HR Copilot"
             className="h-8 w-full"
             priority
           />
