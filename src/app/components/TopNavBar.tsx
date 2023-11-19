@@ -19,7 +19,7 @@ export const TopNavBar = () => {
       )}
     >
       <div className="flex h-10 w-full items-center justify-between">
-        <Link href="/">
+        <Link href="/resume-parser">
           <span className="sr-only">HR Copilot</span>
           <Image
             src={logoSrc}
