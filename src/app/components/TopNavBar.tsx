@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Head from 'next/head';
-import logoSrc from "public/logo.svg";
+import logoSrc from "public/logo.jpeg";
 import { cx } from "lib/cx";
 
 export const TopNavBar = () => {
@@ -18,13 +18,13 @@ export const TopNavBar = () => {
         isHomePage && "bg-dot"
       )}
     >
-      <div className="flex h-10 w-full items-center justify-between">
+      <div className="flex h-15 w-full items-center justify-between">
         <Link href="/resume-parser">
           <span className="sr-only">HR Copilot</span>
           <Image
             src={logoSrc}
             alt="HR Copilot"
-            className="h-8 w-full"
+            className="h-12 w-full"
             priority
           />
         </Link>
