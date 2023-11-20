@@ -30,20 +30,20 @@ export const ResumeDropzone = ({
 }) => {
   const [file, setFile] = useState(defaultFileState);
   const [isHoveredOnDropzone, setIsHoveredOnDropzone] = useState(false);
-  const [hasNonPdfFile, setHasNonPdfFile] = useState(false);
+  const [hasUnallowedFile, setHasUnallowedFile] = useState(false);
   const router = useRouter();
   const delimiter = ";;;";
   let fileUrlConcat = "";
 
   const hasFile = Boolean(file.name);
 
-  const setNewFile = (newFile: File) => {
+  const setNewFile = (newFile: File, fileExtension: string) => {
     if (file.fileUrl) {
       URL.revokeObjectURL(file.fileUrl);
     }
 
     const { name, size } = newFile;
-    const fileUrl = URL.createObjectURL(newFile);
+    const fileUrl = URL.createObjectURL(newFile) + '.' + fileExtension;
     setFile({ name, size, fileUrl });
     fileUrlConcat += fileUrl + delimiter;
   };
@@ -51,17 +51,18 @@ export const ResumeDropzone = ({
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const newFiles = event.dataTransfer.files;
-    for (let i = 0; i < newFiles.length; i++){
+    for (let i = 0; i < newFiles.length; i++) {
       const newFile = newFiles[i];
-      if (newFile.name.endsWith(".pdf")) {
-        setHasNonPdfFile(false);
-        setNewFile(newFile);
+      if (newFile.name.endsWith(".pdf") || newFile.name.endsWith(".docx")) {
+        setHasUnallowedFile(false);
+        const fileExtension = newFile.name.split('.').pop()?.toLowerCase() ?? '';
+        setNewFile(newFile, fileExtension);
         onFileUrlChange(fileUrlConcat);
       } else {
-        setHasNonPdfFile(true);
+        setHasUnallowedFile(true);
       }
     }
-    
+
     setIsHoveredOnDropzone(false);
   };
 
@@ -71,8 +72,14 @@ export const ResumeDropzone = ({
 
     for (let i = 0; i < files.length; i++){
       const newFile = files[i];  
-      setNewFile(newFile);
-      onFileUrlChange(fileUrlConcat);
+      if (newFile.name.endsWith(".pdf") || newFile.name.endsWith(".docx")) {
+        setHasUnallowedFile(false);
+        const fileExtension = newFile.name.split('.').pop()?.toLowerCase() ?? '';
+        setNewFile(newFile, fileExtension);
+        onFileUrlChange(fileUrlConcat);
+      } else {
+        setHasUnallowedFile(true);
+      }
     }
   };
 
@@ -178,12 +185,12 @@ export const ResumeDropzone = ({
                 <input
                   type="file"
                   className="sr-only"
-                  accept=".pdf"
+                  accept=".pdf,.docx"
                   multiple
                   onChange={onInputChange}
                 />
               </label>
-              {hasNonPdfFile && (
+              {hasUnallowedFile && (
                 <p className="mt-6 text-red-400">Only pdf file is supported</p>
               )}
             </>

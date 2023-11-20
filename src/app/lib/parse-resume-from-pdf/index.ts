@@ -1,4 +1,4 @@
-import { readPdf } from "lib/parse-resume-from-pdf/read-pdf";
+import { readPdf } from "lib/parse-resume-from-pdf/read-file";
 import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-items-into-lines";
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";

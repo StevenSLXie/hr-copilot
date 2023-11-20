@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { readPdf } from "lib/parse-resume-from-pdf/read-pdf";
+import { readPdf, readDocx } from "lib/parse-resume-from-pdf/read-file";
 import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-items-into-lines";
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { Heading, Link, Paragraph } from "components/documentation";
@@ -78,7 +78,18 @@ export default function ResumeParser() {
       const fileUrls = fileUrl.split(";;;");
       
       for (let i = 0; i < fileUrls.length-1; i++){
-        const textItems = await readPdf(fileUrls[i]);
+        const fileUrl = fileUrls[i];
+        const fileExtension = fileUrl.split('.').pop();
+        console.log(`File extension: ${fileUrl} ${fileExtension}`);
+
+        let textItems;
+        if (fileExtension === 'pdf') {
+          textItems = await readPdf(fileUrl.split('.')[0]);
+        } else if (fileExtension === 'docx') {
+          textItems = await readDocx(fileUrl.split('.')[0]);
+        } else {
+          throw new Error(`Unsupported file extension: ${fileExtension}`);
+        }
         const lines = groupTextItemsIntoLines(textItems || []);
         const sections = groupLinesIntoSections(lines || []);
         const resume = extractResumeFromSections(sections);
