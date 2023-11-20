@@ -113,7 +113,7 @@ export default function ResumeParser() {
             </Heading>
             <Paragraph>
               You can {" "}
-              <span className="font-semibold">add your PDF resume(s) below</span> to
+              <span className="font-semibold">add your .pdf/.docx resume(s) below</span> to
               batch process them and display the aggregated information in a table
             </Paragraph>
             <div className="mt-3">
