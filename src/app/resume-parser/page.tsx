@@ -12,6 +12,7 @@ import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-in
 
 
 const defaultFileUrl = "";
+const dummyName = "DummyDummy";
 
 // Client-side code
 async function callGpt(text: string) {
@@ -24,15 +25,37 @@ async function callGpt(text: string) {
     body: JSON.stringify({ text }),
   });
   if (!response.ok) {
-    throw new Error('Failed to parse resume');
+    const dummyResume: ResumeType = {
+      profile: {
+        name: dummyName,
+        email: "",
+        phone: "",
+        url: "",
+        summary: "",
+        location: ""
+      },
+      workExperiences: [],
+      educations: [],
+      projects: [],
+      skills: {
+        featuredSkills: [],
+        descriptions: []
+      },
+      custom: {
+        descriptions: []
+      }
+    };
+    console.timeEnd('callGpt Execution Time');
+    return dummyResume;
+  } else {
+    const jsonResponse = await response.json();
+    console.log(`Response content: ${jsonResponse}`);
+    const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
+    const resume: ResumeType = JSON.parse(resumeContent);
+    console.log(resume.profile.name);
+    console.timeEnd('callGpt Execution Time');
+    return resume;
   }
-  const jsonResponse = await response.json();
-  console.log(`Response content: ${jsonResponse}`);
-  const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
-  const resume: ResumeType = JSON.parse(resumeContent);
-  console.log(resume.profile.name);
-  console.timeEnd('callGpt Execution Time');
-  return resume;
 }
 
 export default function ResumeParser() {
@@ -76,7 +99,6 @@ export default function ResumeParser() {
   useEffect(() => {
     async function test() {
       const fileUrls = fileUrl.split(";;;");
-      
       for (let i = 0; i < fileUrls.length-1; i++){
         const fileUrl = fileUrls[i];
         const fileExtension = fileUrl.split('.').pop();
@@ -92,11 +114,15 @@ export default function ResumeParser() {
         }
         const lines = groupTextItemsIntoLines(textItems || []);
         const sections = groupLinesIntoSections(lines || []);
-        const resume = extractResumeFromSections(sections);
+        const resumeRule = extractResumeFromSections(sections);
         const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join('\n');
-        // console.log(concatenatedString);
-        // const resume = await callGpt(concatenatedString);
-        handleUpdateResumes(resume);
+        console.log(concatenatedString);
+        console.log(sections)
+        const resumeAi = await callGpt(concatenatedString);
+        if (resumeAi.profile.name == dummyName) {
+          handleUpdateResumes(resumeRule);} else{
+          handleUpdateResumes(resumeAi);
+          }
       }
     }
     test();

@@ -40,21 +40,35 @@ const prompt = `{
 
 export default async function handler(req, res) {
   try {
-    const completion = await openai.chat.completions.create({
+    const completionPromise = openai.chat.completions.create({
       messages: [
         {
           "role": "system", 
           "content": "The following text is extracted from a resume; parse them into the following format:" 
           + JSON.stringify(prompt) + ". You must return in the prescribed format."
+          // "content": "look at the resume. How many jobs the person has had?"
         },
         {
           "role": "user", 
           "content": JSON.stringify(req.body.text)
         }
       ],
-      model: "gpt-3.5-turbo", //"gpt-3.5-turbo", //"gpt-4-1106-preview", //
+      model: "gpt-3.5-turbo-1106", //"gpt-3.5-turbo", //"gpt-4-1106-preview", //
     });
-    // console.log('completion from server' + completion.choices[0].text);
+    
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out')), 9000)
+    );
+    
+    let completion;
+    try {
+      completion = await Promise.race([completionPromise, timeoutPromise]);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Request timed out' });
+      return;
+    }
+    
     console.log(completion.choices[0])
     res.status(200).json({ text: completion.choices[0] });
   }
