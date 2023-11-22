@@ -110,7 +110,7 @@ const PHONE_FEATURE_SETS: FeatureSet[] = [
 
 // Location -> match location regex <City>, <ST>
 const LOCATION_FEATURE_SETS: FeatureSet[] = [
-  [matchCityAndState, 4, true],
+  [(item: TextItem) => matchCityAndState(item) || null, 4, true],
   [isBold, -1], // Name
   [hasAt, -4], // Email
   [hasParenthesis, -3], // Phone
@@ -135,8 +135,9 @@ const SUMMARY_FEATURE_SETS: FeatureSet[] = [
   [isBold, -1], // Name
   [hasAt, -4], // Email
   [hasParenthesis, -3], // Phone
-  [matchCityAndState, -4, false], // Location
+  [(item: TextItem) => matchCityAndState(item) || null, -4, true], // Location
 ];
+
 
 export const extractProfile = (sections: ResumeSectionToLines) => {
   const lines = sections.profile || [];
