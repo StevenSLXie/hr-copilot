@@ -43,9 +43,9 @@ export const ResumeDropzone = ({
     }
 
     const { name, size } = newFile;
-    const fileUrl = URL.createObjectURL(newFile) + '.' + fileExtension;
+    const fileUrl = URL.createObjectURL(newFile) ;
     setFile({ name, size, fileUrl });
-    fileUrlConcat += fileUrl + delimiter;
+    fileUrlConcat += (fileUrl + '.' + fileExtension) + delimiter;
   };
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
