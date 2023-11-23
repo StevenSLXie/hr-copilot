@@ -101,7 +101,7 @@ export default function ResumeParser() {
       const fileUrls = fileUrl.split(";;;");
       for (let i = 0; i < fileUrls.length-1; i++){
         const fileUrl = fileUrls[i];
-        const fileExtension = fileUrl.split('.').pop();
+        const fileExtension = 'pdf'; //fileUrl.split('.').pop();
         console.log(`File extension: ${fileUrl} ${fileExtension}`);
 
         let textItems;
