@@ -106,7 +106,8 @@ export default function ResumeParser() {
 
         let textItems;
         if (fileExtension === 'pdf') {
-          textItems = await readPdf(fileUrl.split('.')[0]);
+          // textItems = await readPdf(fileUrl.split('.')[0]);
+          textItems = await readPdf(fileUrl);
         } else if (fileExtension === 'docx') {
           textItems = await readDocx(fileUrl.split('.')[0]);
         } else {
