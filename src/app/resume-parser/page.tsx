@@ -179,7 +179,7 @@ export default function ResumeParser() {
                 id="exportButton" 
                 className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
                 style={{ marginTop: '20px' }}
-                onClick={saveTableToExcel}>Copy Table</button>
+                onClick={saveTableToExcel}>Download Table</button>
               <p>{message}</p>
             </div>            
           </section>
