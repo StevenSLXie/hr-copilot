@@ -10,6 +10,7 @@ import type { Resume as ResumeType } from "lib/redux/types";
 import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
+import { utils, writeFile } from 'xlsx';
 
 
 const defaultFileUrl = "";
@@ -68,32 +69,30 @@ export default function ResumeParser() {
     setResumes(prevResumes => [...prevResumes, resume]);
   };
 
-  const copyTableToClipboard = async () => {
+  const saveTableToExcel = () => {
     const table = document.getElementById("resumeDisplay");
     if (!table) return;
-
+  
     // Get all the rows of the table
     const rows = table.querySelectorAll("tr");
-    // Initialize an empty array to hold the CSV data
-    const csv = [];
+    // Initialize an empty array to hold the table data
+    const data = [];
     // Loop through each row
     for (const row of rows) {
       // Get all the cells in the row
       const cells = row.querySelectorAll("td, th");
-      // Get the text content of each cell and add it to the csv array
-      csv.push([...cells].map(cell => cell.textContent ? `"${cell.textContent.replace(/"/g, '""')}"` : "").join(","));
+      // Get the text content of each cell and add it to the data array
+      data.push([...cells].map(cell => cell.textContent || ""));
     }
-    // Join all the rows with newline characters to form the CSV string
-    const csvString = csv.join("\n");
-    try {
-      // Copy the CSV string to the clipboard
-      await navigator.clipboard.writeText(csvString);
-      console.log('Table copied to clipboard');
-      setMessage("Table copied to clipboard; paste it in a spreadsheet (e.g., Excel)");  // Set the message
-    } catch (err) {
-      console.error('Failed to copy table: ', err);
-      setMessage("Failed to copy table to clipboard");
-    }
+  
+    // Create a worksheet
+    const ws = utils.aoa_to_sheet(data);
+    // Create a new workbook
+    const wb = utils.book_new();
+    // Append the worksheet to the workbook
+    utils.book_append_sheet(wb, ws, "Sheet1");
+    // Write the workbook to a file
+    writeFile(wb, "resume_info.xlsx");
   };
 
 
@@ -180,7 +179,7 @@ export default function ResumeParser() {
                 id="exportButton" 
                 className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
                 style={{ marginTop: '20px' }}
-                onClick={copyTableToClipboard}>Copy Table</button>
+                onClick={saveTableToExcel}>Copy Table</button>
               <p>{message}</p>
             </div>            
           </section>
