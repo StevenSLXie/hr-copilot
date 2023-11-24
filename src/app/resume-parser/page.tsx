@@ -9,6 +9,7 @@ import { FlexboxSpacer } from "components/FlexboxSpacer";
 import type { Resume as ResumeType } from "lib/redux/types";
 import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
+import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 
 
 const defaultFileUrl = "";
@@ -116,14 +117,31 @@ export default function ResumeParser() {
         const lines = groupTextItemsIntoLines(textItems || []);
         const sections = groupLinesIntoSections(lines || []);
         const resumeRule = extractResumeFromSections(sections);
-        const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')).join('\n');
-        console.log(concatenatedString);
-        console.log(sections)
-        const resumeAi = await callGpt(concatenatedString);
-        if (resumeAi.profile.name == dummyName) {
-          handleUpdateResumes(resumeRule);} else{
-          handleUpdateResumes(resumeAi);
+        // const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')) // Wrap line in an array
+        //   .filter(line => !BULLET_POINTS.some(bullet => line.includes(bullet))) // Access the first element of the array
+        //   .join('\n');
+        let previousLineContainsBullet = false;
+        let filteredLines = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].map(item => item.text).join(' ');
+          const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);
+          
+          if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
+              !(previousLineContainsBullet && lineStartsWithLowercase)) {
+            filteredLines.push(line);
           }
+          previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
+        }
+        const concatenatedString = filteredLines.join('\n');
+        console.log(concatenatedString);
+    
+        const resumeAi = await callGpt(concatenatedString);
+        if (resumeAi.profile.name === dummyName) {
+          handleUpdateResumes(resumeRule);
+        } else {
+          handleUpdateResumes(resumeAi);
+        }
       }
     }
     test();
