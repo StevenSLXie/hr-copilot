@@ -122,12 +122,18 @@ export default function ResumeParser() {
         let previousLineContainsBullet = false;
         let filteredLines = [];
 
+
+        // three strategies to reduce input text to GPT
+        // 1. remove bullet points
+        // 2. remove lines starting with lowercase letters and previous line contains bullet points
+        // 3. remove lines longer than 400px
         for (let i = 0; i < lines.length; i++) {
           const line = lines[i].map(item => item.text).join(' ');
+          const textWidth = (lines[i].map(item => item.width).reduce((sum, current) => sum + current, 0));
           const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);
           
           if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
-              !(previousLineContainsBullet && lineStartsWithLowercase)) {
+              !(previousLineContainsBullet && lineStartsWithLowercase) && textWidth < 400) {
             filteredLines.push(line);
           }
           previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
