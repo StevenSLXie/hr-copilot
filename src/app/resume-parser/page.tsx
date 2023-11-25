@@ -5,6 +5,7 @@ import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-it
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { Heading, Link, Paragraph } from "components/documentation";
 import { ResumeDisplay } from "resume-parser/ResumeDisplay";
+import {ProgressBar} from "resume-parser/ProgressBar";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import type { Resume as ResumeType } from "lib/redux/types";
 import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
@@ -64,6 +65,8 @@ export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [resumes, setResumes] = useState<ResumeType[]>([]);
   const [message, setMessage] = useState("");
+  const [isParsingFinished, setIsParsingFinished] = useState(false);
+  const [progressBarDuration, setProgressBarDuration] = useState(1000000);
 
   const handleUpdateResumes = (resume: ResumeType) => {
     setResumes(prevResumes => [...prevResumes, resume]);
@@ -98,57 +101,58 @@ export default function ResumeParser() {
 
   useEffect(() => {
     async function test() {
+      setIsParsingFinished(false);
+      setProgressBarDuration(fileUrl ? fileUrl.split(';;;').length - 1 : 0);
       const fileUrls = fileUrl.split(";;;");
-      for (let i = 0; i < fileUrls.length-1; i++){
-        const fileUrl = fileUrls[i];
-        const fileExtension = 'pdf'; //fileUrl.split('.').pop();
-        console.log(`File extension: ${fileUrl} ${fileExtension}`);
-
-        let textItems;
-        if (fileExtension === 'pdf') {
-          // textItems = await readPdf(fileUrl.split('.')[0]);
-          textItems = await readPdf(fileUrl);
-        } else if (fileExtension === 'docx') {
-          textItems = await readDocx(fileUrl.split('.')[0]);
-        } else {
-          throw new Error(`Unsupported file extension: ${fileExtension}`);
-        }
-        const lines = groupTextItemsIntoLines(textItems || []);
-        const sections = groupLinesIntoSections(lines || []);
-        const resumeRule = extractResumeFromSections(sections);
-        // const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')) // Wrap line in an array
-        //   .filter(line => !BULLET_POINTS.some(bullet => line.includes(bullet))) // Access the first element of the array
-        //   .join('\n');
-        let previousLineContainsBullet = false;
-        let filteredLines = [];
-
-
-        // three strategies to reduce input text to GPT
-        // 1. remove bullet points
-        // 2. remove lines starting with lowercase letters and previous line contains bullet points
-        // 3. remove lines longer than 400px and item count = 1
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i].map(item => item.text).join(' ');
-          const textWidth = (lines[i].map(item => item.width).reduce((sum, current) => sum + current, 0));
-          const itemCounts = lines[i].length
-          const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);
-          
-          if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
-              !(previousLineContainsBullet && lineStartsWithLowercase) && (textWidth < 400 || itemCounts > 1)) {
-            filteredLines.push(line);
+      const processingPromises = fileUrls.slice(0, -1).map(async (fileUrl) => {
+          const fileExtension = 'pdf'; //fileUrl.split('.').pop();
+          console.log(`File extension: ${fileUrl} ${fileExtension}`);
+  
+          let textItems;
+          if (fileExtension === 'pdf') {
+            // textItems = await readPdf(fileUrl.split('.')[0]);
+            textItems = await readPdf(fileUrl);
+          } else if (fileExtension === 'docx') {
+            textItems = await readDocx(fileUrl.split('.')[0]);
+          } else {
+            throw new Error(`Unsupported file extension: ${fileExtension}`);
           }
-          previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
-        }
-        const concatenatedString = filteredLines.join('\n');
-        console.log(concatenatedString);
-    
-        const resumeAi = await callGpt(concatenatedString);
-        if (resumeAi.profile.name === dummyName) {
-          handleUpdateResumes(resumeRule);
-        } else {
-          handleUpdateResumes(resumeAi);
-        }
-      }
+          const lines = groupTextItemsIntoLines(textItems || []);
+          const sections = groupLinesIntoSections(lines || []);
+          const resumeRule = extractResumeFromSections(sections);
+          // const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')) // Wrap line in an array
+          //   .filter(line => !BULLET_POINTS.some(bullet => line.includes(bullet))) // Access the first element of the array
+          //   .join('\n');
+          let previousLineContainsBullet = false;
+          let filteredLines = [];
+          // three strategies to reduce input text to GPT
+          // 1. remove bullet points
+          // 2. remove lines starting with lowercase letters and previous line contains bullet points
+          // 3. remove lines longer than 400px and item count = 1
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].map(item => item.text).join(' ');
+            const textWidth = (lines[i].map(item => item.width).reduce((sum, current) => sum + current, 0));
+            const itemCounts = lines[i].length
+            const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);
+            
+            if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
+                !(previousLineContainsBullet && lineStartsWithLowercase) && (textWidth < 400 || itemCounts > 1)) {
+              filteredLines.push(line);
+            }
+            previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
+          }
+          const concatenatedString = filteredLines.join('\n');
+          console.log(concatenatedString);
+      
+          const resumeAi = await callGpt(concatenatedString);
+          if (resumeAi.profile.name === dummyName) {
+            handleUpdateResumes(resumeRule);
+          } else {
+            handleUpdateResumes(resumeAi);
+          }
+      });
+      await Promise.all(processingPromises);
+      setIsParsingFinished(true);
     }
     test();
   }, [fileUrl]);
@@ -163,9 +167,7 @@ export default function ResumeParser() {
               Resume Parser 
             </Heading>
             <Paragraph>
-              You can {" "}
-              <span className="font-semibold">add your .pdf/.docx resume(s) below</span> to
-              batch process them and display the aggregated information in a table
+              <span className="font-semibold">Upload your .pdf resume(s)</span> for batch processing, aggregation, and Excel download.
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -178,6 +180,7 @@ export default function ResumeParser() {
             <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
             </Heading>
+            {fileUrl !== '' && <ProgressBar duration={progressBarDuration * 10000} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} />
             </div>

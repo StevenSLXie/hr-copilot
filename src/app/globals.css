@@ -23,11 +23,12 @@
     @apply focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[color:var(--theme-purple)] hover:opacity-80 hover:outline-[color:var(--theme-purple)];
   }
 
-:root {
-  --theme-purple: #5d52d9;
-  --theme-blue: #4fc5eb;
-  /* Keep the below variable names in sync with CSS_VARIABLES in globals-css.ts */
-  --top-nav-bar-height: 3.5rem;
-  --resume-control-bar-height: 3rem;
-  --resume-padding: 1.5rem;
+  :root {
+    --theme-purple: #5d52d9;
+    --theme-blue: #4fc5eb;
+    /* Keep the below variable names in sync with CSS_VARIABLES in globals-css.ts */
+    --top-nav-bar-height: 3.5rem;
+    --resume-control-bar-height: 3rem;
+    --resume-padding: 1.5rem;
+  }
 }

@@ -153,7 +153,7 @@ export const ResumeDropzone = ({
             </p>
             <p className="flex text-sm text-gray-500">
               <LockClosedIcon className="mr-1 mt-1 h-3 w-3 text-gray-400" />
-              Your data are never stored by us
+              Your data is your data. HR Copilot never stores your data.
             </p>
           </>
         ) : (
