@@ -23,21 +23,6 @@
     @apply focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[color:var(--theme-purple)] hover:opacity-80 hover:outline-[color:var(--theme-purple)];
   }
 
-  /* Add your streaming text animation here */
-  .streaming-text {
-    animation: stream-text 5s steps(100, end) infinite;
-  }
-
-  @keyframes stream-text {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-}
-
 :root {
   --theme-purple: #5d52d9;
   --theme-blue: #4fc5eb;
