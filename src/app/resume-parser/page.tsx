@@ -101,9 +101,13 @@ export default function ResumeParser() {
 
   useEffect(() => {
     async function test() {
+      if (fileUrl === '') {
+        setResumes([]);
+      }
+
       setIsParsingFinished(false);
       setProgressBarDuration(fileUrl ? fileUrl.split(';;;').length - 1 : 0);
-      const fileUrls = fileUrl.split(";;;");
+      const fileUrls = fileUrl.split(';;;');
       const processingPromises = fileUrls.slice(0, -1).map(async (fileUrl) => {
           const fileExtension = 'pdf'; //fileUrl.split('.').pop();
           console.log(`File extension: ${fileUrl} ${fileExtension}`);
@@ -180,6 +184,9 @@ export default function ResumeParser() {
             <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
             </Heading>
+            <Paragraph>
+              AI-powered parsing engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
+            </Paragraph>
             {fileUrl !== '' && <ProgressBar duration={progressBarDuration * 10000} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} />

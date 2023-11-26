@@ -22,14 +22,14 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Location
             </th>
-            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Summary
-            </th> */}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Experience
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Education
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Skills
             </th>
         </tr>
         </thead>
@@ -48,9 +48,6 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.profile.location || ""}
             </td>
-            {/* <td className="px-6 py-4 text-sm text-gray-500">
-                {resume.profile.summary || ""}
-            </td> */}
             <td className="px-6 py-4 text-sm text-gray-500">
             {resume.workExperiences.map((workExperience, index) => {
                 return workExperience.company || workExperience.date || workExperience.jobTitle 
@@ -66,6 +63,14 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
                 return education.school || education.degree || education.date 
                 ? `${education.school}  ${education.degree}  ${education.date}` 
                 : "";
+            }).join("\n").split('\n').map((item, key) => {
+                return <span key={key}>{item}<br/><br/></span>
+            })}
+            </td>
+
+            <td className="px-6 py-4 text-sm text-gray-500">
+            {resume.skills.featuredSkills.map((skill, index) => {
+                return skill || "";
             }).join("\n").split('\n').map((item, key) => {
                 return <span key={key}>{item}<br/><br/></span>
             })}
