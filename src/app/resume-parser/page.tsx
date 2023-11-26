@@ -184,9 +184,9 @@ export default function ResumeParser() {
             <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
             </Heading>
-            <Paragraph>
+            {fileUrl !== '' && <Heading level={3} className="!mt-4">
               AI-powered parsing engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
-            </Paragraph>
+              </Heading>}
             {fileUrl !== '' && <ProgressBar duration={progressBarDuration * 10000} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} />
