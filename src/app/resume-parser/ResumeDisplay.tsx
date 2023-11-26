@@ -28,9 +28,6 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Education
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Skills
-            </th>
         </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -63,14 +60,6 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
                 return education.school || education.degree || education.date 
                 ? `${education.school}  ${education.degree}  ${education.date}` 
                 : "";
-            }).join("\n").split('\n').map((item, key) => {
-                return <span key={key}>{item}<br/><br/></span>
-            })}
-            </td>
-
-            <td className="px-6 py-4 text-sm text-gray-500">
-            {resume.skills.featuredSkills.map((skill, index) => {
-                return skill || "";
             }).join("\n").split('\n').map((item, key) => {
                 return <span key={key}>{item}<br/><br/></span>
             })}
