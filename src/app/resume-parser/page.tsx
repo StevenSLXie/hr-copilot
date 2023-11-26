@@ -186,9 +186,9 @@ export default function ResumeParser() {
             <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
             </Heading>
-            {fileUrl !== '' && <Heading level={3} className="!mt-4">
+            {fileUrl !== '' && <p className="text-gray-500 mt-4 text-small">
               AI-powered engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
-              </Heading>}
+              </p>}
             {fileUrl !== '' && <ProgressBar duration={progressBarDuration * 10000} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} />
@@ -203,10 +203,10 @@ export default function ResumeParser() {
             </div>   
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
-              - If you're interested in accessing the complete version of HR Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>.
+              - <span className="font-semibold"> If you're interested in accessing the complete version of HR Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
             </p>    
             <p className="text-gray-500 mt-2 text-xs">
-              - HR Copilot respects your privacy and never retains your data. However, please note that part of the information in resumes is processed via the OpenAI API. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
+              - HR Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
 
             </p>      
             <p className="text-gray-500 mt-2 text-xs">
