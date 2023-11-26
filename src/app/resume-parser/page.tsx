@@ -173,7 +173,7 @@ export default function ResumeParser() {
               HR Copilot (Beta)
             </Heading>
             <Paragraph>
-              <span className="font-semibold">Upload your .pdf resumes in batch </span>for processing, aggregation, and Excel download (For Beta testing, up to 5 resumes are processed for free).
+              <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download (For Beta testing, up to 5 resumes are processed for free).
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -202,15 +202,19 @@ export default function ResumeParser() {
               <p>{message}</p>
             </div>   
             <hr className="border-gray-500 mt-4" />
+            <p className="text-black-500 mt-2 text-xs">
+              - If you're interested in accessing the complete version of HR Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>.
+            </p>    
             <p className="text-gray-500 mt-2 text-xs">
-              - HR Copilot respects your privacy and never retains your data. However, please note that the resumes are processed via the OpenAI API. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
+              - HR Copilot respects your privacy and never retains your data. However, please note that part of the information in resumes is processed via the OpenAI API. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
+
             </p>      
-            <p className="text-gray-500 mt-2 text-xs">
-              - HR Copilot makes use of components in <a href="https://github.com/xitanggg/open-resume" target="_blank" rel="noopener noreferrer">Open Resume</a> and make substantial modifications. 
-            </p>  
             <p className="text-gray-500 mt-2 text-xs">
               - HR Copilot provides information for reference only and is not responsible for any misunderstandings or misinterpretations. Use this service at your own discretion.
             </p> 
+            <p className="text-gray-500 mt-2 text-xs">
+              - HR Copilot makes use of components in <a href="https://github.com/xitanggg/open-resume" target="_blank" rel="noopener noreferrer">Open Resume</a> and make substantial modifications. 
+            </p>  
           </section>
         </div>
       </div>
