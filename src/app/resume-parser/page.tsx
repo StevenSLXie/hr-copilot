@@ -108,7 +108,9 @@ export default function ResumeParser() {
       setIsParsingFinished(false);
       setProgressBarDuration(fileUrl ? fileUrl.split(';;;').length - 1 : 0);
       const fileUrls = fileUrl.split(';;;');
-      const processingPromises = fileUrls.slice(0, -1).map(async (fileUrl) => {
+      const filesToProcess = fileUrls.length > 5 ? 5 : fileUrls.length - 1;
+      setProgressBarDuration(filesToProcess > 0 ? filesToProcess : 0);
+      const processingPromises = fileUrls.slice(0, filesToProcess).map(async (fileUrl) => {
           const fileExtension = 'pdf'; //fileUrl.split('.').pop();
           console.log(`File extension: ${fileUrl} ${fileExtension}`);
   
