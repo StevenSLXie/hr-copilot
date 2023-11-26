@@ -149,13 +149,20 @@ export default function ResumeParser() {
           }
           const concatenatedString = filteredLines.join('\n');
           console.log(concatenatedString);
-      
-          const resumeAi = await callGpt(concatenatedString);
-          if (resumeAi.profile.name === dummyName) {
+
+          // if too many lines, too rules directly
+          if (filteredLines.length > 100){
             handleUpdateResumes(resumeRule);
-          } else {
-            handleUpdateResumes(resumeAi);
+          }else {
+            const resumeAi = await callGpt(concatenatedString);
+            if (resumeAi.profile.name === dummyName) {
+              handleUpdateResumes(resumeRule);
+            } else {
+              handleUpdateResumes(resumeAi);
+            }
           }
+
+          
       });
       await Promise.all(processingPromises);
       setIsParsingFinished(true);
