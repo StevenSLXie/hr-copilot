@@ -28,7 +28,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ duration, isFinished }
   }, [duration, isFinished]);
 
   return (
-    <div className="w-full h-4 bg-gray-200 rounded-full">
+    <div className="w-full h-4 bg-gray-200 rounded-full mt-4">
       <div
         style={{ width: `${Math.round(progress)}%` }}
         className="h-full text-center text-xs text-white bg-blue-500 rounded-full"

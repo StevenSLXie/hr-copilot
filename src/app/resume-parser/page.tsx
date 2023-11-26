@@ -170,10 +170,10 @@ export default function ResumeParser() {
           <FlexboxSpacer maxWidth={45} className="hidden md:block" />
           <section className="max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume Parser 
+              HR Copilot (Beta)
             </Heading>
             <Paragraph>
-              <span className="font-semibold">Upload your .pdf resume(s)</span> for batch processing, aggregation, and Excel download.
+              <span className="font-semibold">Upload your .pdf resumes in batch </span>for processing, aggregation, and Excel download (For Beta testing, up to 5 resumes are processed for free).
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -187,7 +187,7 @@ export default function ResumeParser() {
               Resume Parsing Results
             </Heading>
             {fileUrl !== '' && <Heading level={3} className="!mt-4">
-              AI-powered parsing engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
+              AI-powered engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
               </Heading>}
             {fileUrl !== '' && <ProgressBar duration={progressBarDuration * 10000} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
@@ -200,7 +200,17 @@ export default function ResumeParser() {
                 style={{ marginTop: '20px' }}
                 onClick={saveTableToExcel}>Download Table</button>
               <p>{message}</p>
-            </div>            
+            </div>   
+            <hr className="border-gray-500 mt-4" />
+            <p className="text-gray-500 mt-2 text-xs">
+              - HR Copilot respects your privacy and never retains your data. However, please note that the resumes are processed via the OpenAI API. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
+            </p>      
+            <p className="text-gray-500 mt-2 text-xs">
+              - HR Copilot makes use of components in <a href="https://github.com/xitanggg/open-resume" target="_blank" rel="noopener noreferrer">Open Resume</a> and make substantial modifications. 
+            </p>  
+            <p className="text-gray-500 mt-2 text-xs">
+              - HR Copilot provides information for reference only and is not responsible for any misunderstandings or misinterpretations. Use this service at your own discretion.
+            </p> 
           </section>
         </div>
       </div>
