@@ -151,7 +151,8 @@ export default function ResumeParser() {
           console.log(concatenatedString);
 
           // if too many lines, too rules directly
-          if (filteredLines.length > 100){
+          const lineLimit = 100;
+          if (filteredLines.length > lineLimit){
             handleUpdateResumes(resumeRule);
           }else {
             const resumeAi = await callGpt(concatenatedString);
