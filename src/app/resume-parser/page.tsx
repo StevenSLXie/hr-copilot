@@ -19,7 +19,7 @@ const dummyName = "DummyDummy";
 
 // Client-side code
 async function callGpt(text: string) {
-  console.time('callGpt Execution Time');
+  // console.time('callGpt Execution Time');
   const response = await fetch('/api/callGpt', {
     method: 'POST',
     headers: {
@@ -48,7 +48,7 @@ async function callGpt(text: string) {
         descriptions: []
       }
     };
-    console.timeEnd('callGpt Execution Time');
+    // console.timeEnd('callGpt Execution Time');
     return dummyResume;
   } else {
     const jsonResponse = await response.json();
@@ -155,7 +155,9 @@ export default function ResumeParser() {
           if (filteredLines.length > lineLimit){
             handleUpdateResumes(resumeRule);
           }else {
+            console.time('callGpt Execution Time');
             const resumeAi = await callGpt(concatenatedString);
+            console.time('callGpt Execution Time');
             if (resumeAi.profile.name === dummyName) {
               handleUpdateResumes(resumeRule);
             } else {
