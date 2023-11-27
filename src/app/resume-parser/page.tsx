@@ -12,7 +12,7 @@ import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-res
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 import { utils, writeFile } from 'xlsx';
-
+import { LIMITS } from '../../constants';
 
 const defaultFileUrl = "";
 const dummyName = "DummyDummy";
@@ -105,7 +105,7 @@ export default function ResumeParser() {
       setIsParsingFinished(false);
       setProgressBarDuration(fileUrl ? fileUrl.split(';;;').length - 1 : 0);
       const fileUrls = fileUrl.split(';;;');
-      const filesToProcess = fileUrls.length > 5 ? 5 : fileUrls.length - 1;
+      const filesToProcess = fileUrls.length > LIMITS.NUM_RESUMES ? LIMITS.NUM_RESUMES : fileUrls.length - 1;
       setProgressBarDuration(filesToProcess > 0 ? filesToProcess : 0);
       const processingPromises = fileUrls.slice(0, filesToProcess).map(async (fileUrl) => {
           const fileExtension = 'pdf'; //fileUrl.split('.').pop();
@@ -139,7 +139,7 @@ export default function ResumeParser() {
             const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);
             
             if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
-                !(previousLineContainsBullet && lineStartsWithLowercase) && (textWidth < 400 || itemCounts > 1)) {
+                !(previousLineContainsBullet && lineStartsWithLowercase) && (textWidth < LIMITS.PIXEL_WIDTH_LIMIT || itemCounts > 1)) {
               filteredLines.push(line);
             }
             previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
@@ -148,7 +148,7 @@ export default function ResumeParser() {
           console.log(concatenatedString);
 
           // if too many lines, too rules directly
-          const lineLimit = 300;
+          const lineLimit = LIMITS.LINE_LIMIT;
           if (filteredLines.length > lineLimit){
             handleUpdateResumes(resumeRule);
           }else {
