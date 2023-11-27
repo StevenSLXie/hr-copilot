@@ -84,7 +84,6 @@ export default function ResumeParser() {
       // Get the text content of each cell and add it to the data array
       data.push([...cells].map(cell => cell.textContent || ""));
     }
-  
     // Create a worksheet
     const ws = utils.aoa_to_sheet(data);
     // Create a new workbook
