@@ -151,7 +151,7 @@ export default function ResumeParser() {
           console.log(concatenatedString);
 
           // if too many lines, too rules directly
-          const lineLimit = 100;
+          const lineLimit = 300;
           if (filteredLines.length > lineLimit){
             handleUpdateResumes(resumeRule);
           }else {

@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 
+export const maxDuration = 30;
+
 const openai = new OpenAI();
 
 const prompt = `{
@@ -57,7 +59,7 @@ export default async function handler(req, res) {
     });
     
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timed out')), 30000)
+      setTimeout(() => reject(new Error('Request timed out')), 35000)
     );
     
     let completion;
