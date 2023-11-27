@@ -48,15 +48,12 @@ async function callGpt(text: string) {
         descriptions: []
       }
     };
-    // console.timeEnd('callGpt Execution Time');
     return dummyResume;
   } else {
     const jsonResponse = await response.json();
-    console.log(`Response content: ${jsonResponse}`);
     const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
     const resume: ResumeType = JSON.parse(resumeContent);
     console.log(resume.profile.name);
-    console.timeEnd('callGpt Execution Time');
     return resume;
   }
 }
@@ -157,7 +154,7 @@ export default function ResumeParser() {
           }else {
             console.time('callGpt Execution Time');
             const resumeAi = await callGpt(concatenatedString);
-            console.time('callGpt Execution Time');
+            console.timeEnd('callGpt Execution Time');
             if (resumeAi.profile.name === dummyName) {
               handleUpdateResumes(resumeRule);
             } else {
