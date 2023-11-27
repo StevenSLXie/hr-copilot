@@ -134,8 +134,7 @@ export default function ResumeParser() {
             const line = lines[i].map(item => item.text).join(' ');
             const textWidth = (lines[i].map(item => item.width).reduce((sum, current) => sum + current, 0));
             const itemCounts = lines[i].length
-            const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);
-            
+            const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);         
             if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
                 !(previousLineContainsBullet && lineStartsWithLowercase) && (textWidth < LIMITS.PIXEL_WIDTH_LIMIT || itemCounts > 1)) {
               filteredLines.push(line);
@@ -150,9 +149,9 @@ export default function ResumeParser() {
           if (filteredLines.length > lineLimit){
             handleUpdateResumes(resumeRule);
           }else {
-            console.time('callGptTime');
+            console.time('callGptTime for' + filteredLines.length + ' lines');
             const resumeAi = await callGpt(concatenatedString);
-            console.timeEnd('callGptTime');
+            console.timeEnd('callGptTime for' + filteredLines.length + ' lines');
             if (resumeAi.profile.name === dummyName) {
               handleUpdateResumes(resumeRule);
             } else {
