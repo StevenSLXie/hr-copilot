@@ -195,7 +195,7 @@ export default function ResumeParser() {
             {fileUrl !== '' && <p className="text-gray-500 mt-4 text-small">
               AI-powered engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
               </p>}
-            {fileUrl !== '' && <ProgressBar duration={progressBarDuration * 10000} isFinished={isParsingFinished} />}
+            {fileUrl !== '' && <ProgressBar duration={progressBarDuration * LIMITS.DEFAULT_WAITTIME} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} />
             </div>
