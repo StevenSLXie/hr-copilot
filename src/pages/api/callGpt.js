@@ -1,6 +1,10 @@
 import OpenAI from "openai";
 
-export const maxDuration = 15;
+export const maxDuration = 5;
+
+export const config = {
+  maxDuration: 5,
+};
 
 const openai = new OpenAI();
 
