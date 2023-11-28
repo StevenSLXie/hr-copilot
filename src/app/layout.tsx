@@ -18,7 +18,7 @@ export default function RootLayout({
       <body>
         <TopNavBar />
         {children}
-        {/* <Analytics /> */}
+        <Analytics />
       </body>
     </html>
   );
