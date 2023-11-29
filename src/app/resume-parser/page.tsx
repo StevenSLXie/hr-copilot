@@ -13,6 +13,7 @@ import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-in
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 import { utils, writeFile } from 'xlsx';
 import { LIMITS } from '../../constants';
+import CheckoutButton from "resume-parser/DonationCheckout";
 
 const defaultFileUrl = "";
 const dummyName = "DummyDummy";
@@ -200,6 +201,9 @@ export default function ResumeParser() {
                 onClick={saveTableToExcel}>Download Table</button>
               <p>{message}</p>
             </div>   
+            <div id="checkouButton">
+              <CheckoutButton />
+            </div>
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
               - <span className="font-semibold"> If you're interested in accessing the complete version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
