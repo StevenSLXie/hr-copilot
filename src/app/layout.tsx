@@ -3,9 +3,9 @@ import { TopNavBar } from "components/TopNavBar";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
-  title: "HR Copilot - Every HR Professional Needs a Copilot",
+  title: "Recruitment Copilot - Every Recruiter Needs a Copilot",
   description:
-    "HR Copilot parses PDF resumes in batches and parse them into a Excel-freiendly table",
+    "Recruitment Copilot parses PDF resumes in batches and parse them into a Excel",
 };
 
 export default function RootLayout({
