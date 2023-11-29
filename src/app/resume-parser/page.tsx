@@ -121,9 +121,6 @@ export default function ResumeParser() {
           const lines = groupTextItemsIntoLines(textItems || []);
           const sections = groupLinesIntoSections(lines || []);
           const resumeRule = extractResumeFromSections(sections);
-          // const concatenatedString = lines.map(line => line.map(item => item.text).join(' ')) // Wrap line in an array
-          //   .filter(line => !BULLET_POINTS.some(bullet => line.includes(bullet))) // Access the first element of the array
-          //   .join('\n');
           let previousLineContainsBullet = false;
           let filteredLines = [];
           // three strategies to reduce input text to GPT
@@ -172,7 +169,7 @@ export default function ResumeParser() {
           <FlexboxSpacer maxWidth={45} className="hidden md:block" />
           <section className="max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              HR Copilot (Beta)
+              Recruitment Copilot (Beta)
             </Heading>
             <Paragraph>
               <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download (For Beta testing, up to 5 resumes are processed for free).
@@ -205,17 +202,17 @@ export default function ResumeParser() {
             </div>   
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
-              - <span className="font-semibold"> If you're interested in accessing the complete version of HR Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
+              - <span className="font-semibold"> If you're interested in accessing the complete version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
             </p>    
             <p className="text-gray-500 mt-2 text-xs">
-              - HR Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
+              - Recruitment Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
 
             </p>      
             <p className="text-gray-500 mt-2 text-xs">
-              - HR Copilot provides information for reference only and is not responsible for any misunderstandings or misinterpretations. Use this service at your own discretion.
+              - Recruitment Copilot provides information for reference only and is not responsible for any misunderstandings or misinterpretations. Use this service at your own discretion.
             </p> 
             <p className="text-gray-500 mt-2 text-xs">
-              - HR Copilot makes use of components in <a href="https://github.com/xitanggg/open-resume" target="_blank" rel="noopener noreferrer">Open Resume</a> and make substantial modifications. 
+              - Recruitment Copilot makes use of components in <a href="https://github.com/xitanggg/open-resume" target="_blank" rel="noopener noreferrer">Open Resume</a> and make substantial modifications. 
             </p>  
           </section>
         </div>
