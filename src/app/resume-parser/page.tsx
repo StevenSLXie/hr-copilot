@@ -165,9 +165,9 @@ export default function ResumeParser() {
   return (
     <main className="h-full w-full overflow-hidden">
       <div className="grid md:grid-cols-2">
-        <div className="flex px-6 text-gray-900 md:col-span-3 md:h-[calc(100vh-var(--top-nav-bar-height))] md:overflow-y-scroll">
+        <div className="flex px-2 text-gray-900 md:col-span-3 md:h-[calc(100vh-var(--top-nav-bar-height))] md:overflow-y-scroll">
           <FlexboxSpacer maxWidth={45} className="hidden md:block" />
-          <section className="max-w-[1920px] grow">
+          <section className="max-w-full md:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
               Recruitment Copilot (Beta)
             </Heading>
