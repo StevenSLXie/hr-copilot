@@ -1,50 +1,59 @@
 import { useEffect, useState } from 'react';
-import getStripe from '../../utils/get-stripejs';
-import { Stripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const CheckoutButton = () => {
-  const [stripe, setStripe] = useState<Stripe | null>(null);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-    useEffect(() => {
-        async function fetchStripe() {
-        const stripeInstance = await getStripe();
-        setStripe(stripeInstance);
-        }
+const CheckoutForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
 
-        fetchStripe();
-    }, []);
-
-  const handleClick = async (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    const response = await fetch('/api/checkout_sessions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: 1000, // amount in cents
-      }),
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement!,
     });
 
-    const session = await response.json();
+    if (error) {
+      console.error(error);
+    } else {
+      const response = await fetch('/api/charge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          payment_method_id: paymentMethod!.id,
+          amount: 1000, // amount in cents
+        }),
+      });
 
-    if (stripe) {
-        const result = await (stripe as any).redirectToCheckout({
-            sessionId: session.id,
-        });
+      const result = await response.json();
 
-        if (result.error) {
-            console.error(result.error.message);
-        }
+      if (result.error) {
+        console.error(result.error.message);
+      } else {
+        console.log('Payment successful!');
+      }
     }
   };
 
   return (
-    <button role="link" onClick={handleClick}>
-      Donate
-    </button>
+    <form onSubmit={handleSubmit}>
+        <CardElement className="mb-4 p-2 border-2 border-gray-300 rounded" />
+        <button type="submit" disabled={!stripe} className="btn">
+        Donate
+        </button>
+    </form>
   );
 };
 
-export default CheckoutButton;
+export default CheckoutForm;

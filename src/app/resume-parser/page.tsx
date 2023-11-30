@@ -13,10 +13,13 @@ import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-in
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 import { utils, writeFile } from 'xlsx';
 import { LIMITS } from '../../constants';
-import CheckoutButton from "resume-parser/DonationCheckout";
+import CheckoutForm from "resume-parser/DonationCheckout";
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 const defaultFileUrl = "";
 const dummyName = "DummyDummy";
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 // Client-side code
 async function callGpt(text: string) {
@@ -201,8 +204,10 @@ export default function ResumeParser() {
                 onClick={saveTableToExcel}>Download Table</button>
               <p>{message}</p>
             </div>   
-            <div id="checkouButton">
-              <CheckoutButton />
+            <div id="checkoutButton">
+              <Elements stripe={stripePromise}>
+              <CheckoutForm />
+              </Elements>
             </div>
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
