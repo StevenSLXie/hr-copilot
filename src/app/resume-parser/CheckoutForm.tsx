@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+type Props = {
+  amount: number;
+};
 
-const CheckoutForm = () => {
+const CheckoutForm : React.FC<Props> = ({ amount }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -32,7 +34,7 @@ const CheckoutForm = () => {
         },
         body: JSON.stringify({
           payment_method_id: paymentMethod!.id,
-          amount: 1000, // amount in cents
+          amount: 100 * amount, // amount in cents
         }),
       });
 

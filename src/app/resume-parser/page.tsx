@@ -13,7 +13,7 @@ import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-in
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 import { utils, writeFile } from 'xlsx';
 import { LIMITS } from '../../constants';
-import CheckoutForm from "resume-parser/DonationCheckout";
+import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -206,7 +206,7 @@ export default function ResumeParser() {
             </div>   
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-              <CheckoutForm />
+                <CheckoutForm amount={resumes.length} />
               </Elements>
             </div>
             <hr className="border-gray-500 mt-4" />
