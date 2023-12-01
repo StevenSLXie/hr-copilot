@@ -66,10 +66,17 @@ export default function ResumeParser() {
   const [resumes, setResumes] = useState<ResumeType[]>([]);
   const [message, setMessage] = useState("");
   const [isParsingFinished, setIsParsingFinished] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(3);
+  const [isPaid, setIsPaid] = useState(false); 
   const [progressBarDuration, setProgressBarDuration] = useState(1000000);
 
   const handleUpdateResumes = (resume: ResumeType) => {
     setResumes(prevResumes => [...prevResumes, resume]);
+  };
+
+  const handlePaymentSuccess = () => {
+    setDisplayLimit(1000000);
+    setIsPaid(true);
   };
 
   const saveTableToExcel = () => {
@@ -194,28 +201,31 @@ export default function ResumeParser() {
               </p>}
             {fileUrl !== '' && <ProgressBar duration={progressBarDuration * LIMITS.DEFAULT_WAITTIME} isFinished={isParsingFinished} />}
             <div id="resumeDisplay">
-              <ResumeDisplay resumes={resumes} />
+              <ResumeDisplay resumes={resumes} limit={displayLimit} />
             </div>
-            <div>
+            {(isPaid || resumes.length <= length) && <div>
               <button 
                 id="exportButton" 
-                className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-                style={{ marginTop: '20px' }}
+                className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4"
                 onClick={saveTableToExcel}>Download Table</button>
-              <p>{message}</p>
-            </div>   
+            </div>}   
+            {resumes.length > displayLimit && 
+            <p className="text-gray-500 mt-2 text-xs">
+               <span className="font-semibold">First {displayLimit} resumes are shown above for you to access the quality of the parsing results. Pay {resumes.length * 0.1} USD to download all {resumes.length} resumes.</span>
+            </p>}
+
+            {resumes.length > displayLimit && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={resumes.length} />
+                <CheckoutForm amount={resumes.length * 0.1} onPaymentSuccess={handlePaymentSuccess}/>
               </Elements>
-            </div>
+            </div>}
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
               - <span className="font-semibold"> If you're interested in accessing the complete version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
             </p>    
             <p className="text-gray-500 mt-2 text-xs">
               - Recruitment Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
-
             </p>      
             <p className="text-gray-500 mt-2 text-xs">
               - Recruitment Copilot provides information for reference only and is not responsible for any misunderstandings or misinterpretations. Use this service at your own discretion.

@@ -4,19 +4,35 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 type Props = {
   amount: number;
+  onPaymentSuccess?: () => void;
 };
 
-const CheckoutForm : React.FC<Props> = ({ amount }) => {
+const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess }) => {
   const stripe = useStripe();
+  const payAmount = amount;
+  const CARD_ELEMENT_OPTIONS = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: 'Arial, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#32325d"
+        }
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a"
+      }
+    }
+  };
   const elements = useElements();
-
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-
     if (!stripe || !elements) {
       return;
     }
-
     const cardElement = elements.getElement(CardElement);
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -37,22 +53,21 @@ const CheckoutForm : React.FC<Props> = ({ amount }) => {
           amount: 100 * amount, // amount in cents
         }),
       });
-
       const result = await response.json();
-
       if (result.error) {
         console.error(result.error.message);
       } else {
-        console.log('Payment successful!');
+        console.log('Payment successful, amount charged is: ', amount, ' dollars');
+        onPaymentSuccess?.();
       }
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-        <CardElement className="mb-4 p-2 border-2 border-gray-300 rounded" />
-        <button type="submit" disabled={!stripe} className="btn">
-        Donate
+        <CardElement options={CARD_ELEMENT_OPTIONS} className='mt-6' />
+        <button type="submit" disabled={!stripe} className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4">
+        Pay {payAmount} USD to download all resumes
         </button>
     </form>
   );

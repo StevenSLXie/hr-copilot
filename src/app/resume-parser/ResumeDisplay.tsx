@@ -3,9 +3,10 @@ import type { Resume } from "lib/redux/types";
 
 interface ResumeDisplayProps {
   resumes: Resume[];
+  limit: number;
 }
 
-export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
+export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes, limit }) => {
   const headers = ['Name', 'Email', 'Phone', 'Location', 'Experience', 'Education'];
   return (
     <table className="min-w-full divide-y divide-gray-200 mt-4">
@@ -19,7 +20,7 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes }) => {
             </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-        {resumes.map((resume, index) => (
+        {resumes.slice(0, limit).map((resume, index) => (
             <tr key={index}>
             <td className="px-6 py-4 text-sm text-gray-500">
                 {resume.profile.name || ""}
