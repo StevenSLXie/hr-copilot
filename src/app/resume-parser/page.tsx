@@ -174,16 +174,21 @@ export default function ResumeParser() {
 
   return (
     <main className="h-full w-full overflow-hidden">
-      <div className="grid sm:grid-cols-2">
-        <div className="flex px-2 text-gray-900 sm:col-span-3 sm:h-[calc(100vh-var(--top-nav-bar-height))] sm:overflow-y-scroll">
+      <div className="grid grid-cols-1 sm:grid-cols-2">
+        <div className="flex px-2 text-gray-900 h-[calc(100vh-var(--top-nav-bar-height))] overflow-y-scroll sm:col-span-3">
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Recruitment Copilot (Beta)
+              Recruitment Copilot
             </Heading>
             <Paragraph>
-              <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy.
+              <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy. 
             </Paragraph>
+            <p className="mt-2 text-base"> - Free for first 3 resumes </p>  
+            <p className="text-base"> - Pay 0.1 USD per resume for more than 3 resumes, with a minimal charge of 1 USD </p> 
+            <p className="text-base"> - No registration, no credit/plan. Pay as you use </p>
+            <p className="text-base"> - Reach out to us via <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> for feedbacks and customized solutions </p>
+            
             <div className="mt-3">
               <ResumeDropzone
                 onFileUrlChange={(fileUrl) =>
@@ -192,9 +197,9 @@ export default function ResumeParser() {
                 playgroundView={true}
               />
             </div>
-            <Heading level={2} className="text-primary !mt-4">
+            {fileUrl !== '' && <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
-            </Heading>
+            </Heading>}
             {fileUrl !== '' && <p className="text-gray-500 mt-4 text-small">
               AI-powered engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
               </p>}
@@ -202,7 +207,7 @@ export default function ResumeParser() {
             <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} limit={displayLimit} />
             </div>
-            {(isPaid || resumes.length <= displayLimit) && <div>
+            {(isPaid || (resumes.length <= displayLimit && resumes.length > 0)) && <div>
               <button 
                 id="exportButton" 
                 className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4"
@@ -213,16 +218,16 @@ export default function ResumeParser() {
                <span className="font-semibold">First {LIMITS.DEFAULT_DISPLAY_LIMIT} resumes are shown above for your preview. Pay {resumes.length * 0.1} USD to download all {resumes.length} resumes.</span>
             </p>}
 
-            {/* {resumes.length > displayLimit &&  */}
+            {resumes.length > displayLimit && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={resumes.length * 0.1} onPaymentSuccess={handlePaymentSuccess}/>
+                <CheckoutForm amount={Math.max(resumes.length * 0.1, 1)} onPaymentSuccess={handlePaymentSuccess}/>
               </Elements>
             </div>
-            {/* } */}
+            }
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
-              - <span className="font-semibold"> If you're interested in accessing the complete version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
+              - <span className="font-semibold"> If you're interested in accessing the full version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
             </p>    
             <p className="text-gray-500 mt-2 text-xs">
               - Recruitment Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
