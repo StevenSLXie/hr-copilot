@@ -54,6 +54,7 @@ const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess }) => {
         }),
       });
       const result = await response.json();
+
       if (result.error) {
         console.error(result.error.message);
       } else {
@@ -65,7 +66,7 @@ const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-        <CardElement options={CARD_ELEMENT_OPTIONS} className='mt-6' />
+        <CardElement options={CARD_ELEMENT_OPTIONS} className='mt-6 w-1/2 mx-auto' />
         <button type="submit" disabled={!stripe} className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4">
         Pay {payAmount} USD to download all resumes
         </button>
