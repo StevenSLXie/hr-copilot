@@ -10,23 +10,6 @@ type Props = {
 const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess }) => {
   const stripe = useStripe();
   const payAmount = amount;
-  const CARD_ELEMENT_OPTIONS = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: 'Arial, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#32325d"
-        }
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a"
-      }
-    }
-  };
   const elements = useElements();
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
