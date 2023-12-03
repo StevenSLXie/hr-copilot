@@ -6,6 +6,7 @@ interface ResumeDisplayProps {
   limit: number;
 }
 
+
 export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes, limit }) => {
   const headers = ['Name', 'Email', 'Phone', 'Location', 'Experience', 'Education', 'Summary'];
   return (

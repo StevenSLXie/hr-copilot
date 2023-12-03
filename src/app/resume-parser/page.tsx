@@ -12,7 +12,7 @@ import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-res
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 import { utils, writeFile } from 'xlsx';
-import { LIMITS, DUMMY_RESUME } from '../../constants';
+import { LIMITS, DUMMY_RESUME, VOUCHERS } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -52,6 +52,7 @@ export default function ResumeParser() {
   const [isPaid, setIsPaid] = useState(false); 
   const [isPaymentFailed, setIsPaymentFailed] = useState(false); 
   const [progressBarDuration, setProgressBarDuration] = useState(1000000);
+  const [voucherCode, setVoucherCode] = useState('');
 
   const handleUpdateResumes = (resume: ResumeType) => {
     setResumes(prevResumes => [...prevResumes, resume]);
@@ -64,6 +65,13 @@ export default function ResumeParser() {
 
   const handlePaymentFailure = () => {
     setIsPaymentFailed(true);
+  };
+
+  const handleVoucherSubmit = () => {
+    if (VOUCHERS.includes(voucherCode)) {
+      setDisplayLimit(LIMITS.MAX_INT);
+      setIsPaid(true);
+    }
   };
 
   const saveTableToExcel = () => {
@@ -210,8 +218,18 @@ export default function ResumeParser() {
                 onClick={saveTableToExcel}>Download Table</button>
             </div>}   
             {resumes.length > displayLimit && 
-            <p className="text-gray-500 mt-2 text-xs">
-               <span className="font-semibold">First {LIMITS.DEFAULT_DISPLAY_LIMIT} resumes are shown above for your preview. Pay {Math.max(resumes.length * 0.1 - 0.3, 1)} USD to download all parsed {resumes.length} resumes.</span>
+            <p className="text-gray-500 mt-2 text-xs font-semibold">
+              First {LIMITS.DEFAULT_DISPLAY_LIMIT} resumes are shown above for your preview. To get all the data, choose one of the 2 options: 
+            </p>}
+
+            {resumes.length > displayLimit && 
+            <p className="text-gray-500 mt-2 text-xs font-semibold">
+              - Enter you bank details and pay {Math.max(resumes.length * 0.1 - 0.3, 1)} USD to download all parsed {resumes.length} resumes. OR
+            </p>}
+
+            {resumes.length > displayLimit && 
+            <p className="text-gray-500 mt-2 text-xs font-semibold">
+              - If you have been given a coupon, please enter your coupon code
             </p>}
 
             {resumes.length > displayLimit && 
@@ -221,6 +239,25 @@ export default function ResumeParser() {
               </Elements>
             </div>
             }
+
+            {resumes.length > displayLimit && 
+            <div id="voucherInput" className="flex items-center mt-2">
+                <input 
+                  type="text" 
+                  value={voucherCode} 
+                  onChange={(e) => setVoucherCode(e.target.value)} 
+                  placeholder="🎟️ has coupon?"
+                  className="py-2 px-10 text-left"
+                />
+                <button 
+                  onClick={handleVoucherSubmit} 
+                  className="bg-blue-400 hover:bg-blue-600 text-white h-full py-2 px-4 rounded ml-4"
+                >
+                  Redeem Coupon
+                </button>
+            </div>
+          } 
+
 
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
 
