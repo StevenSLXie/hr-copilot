@@ -12,13 +12,12 @@ import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-res
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
 import { utils, writeFile } from 'xlsx';
-import { LIMITS } from '../../constants';
+import { LIMITS, DUMMY_RESUME } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
 const defaultFileUrl = "";
-const dummyName = "DummyDummy";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 // Client-side code
@@ -31,33 +30,17 @@ async function callGpt(text: string) {
     body: JSON.stringify({ text }),
   });
   if (!response.ok) {
-    const dummyResume: ResumeType = {
-      profile: {
-        name: dummyName,
-        email: "",
-        phone: "",
-        url: "",
-        summary: "",
-        location: ""
-      },
-      workExperiences: [],
-      educations: [],
-      projects: [],
-      skills: {
-        featuredSkills: [],
-        descriptions: []
-      },
-      custom: {
-        descriptions: []
-      }
-    };
-    return dummyResume;
+    return DUMMY_RESUME;
   } else {
     const jsonResponse = await response.json();
-    const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
-    const resume: ResumeType = JSON.parse(resumeContent);
-    console.log(resume.profile.name);
-    return resume;
+    try {
+      const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
+      const resume: ResumeType = JSON.parse(resumeContent);
+      return resume;
+    } catch (error){
+      console.error('Error parsing resume:', error);
+      return DUMMY_RESUME;
+    }
   }
 }
 
@@ -149,7 +132,7 @@ export default function ResumeParser() {
             previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
           }
           const concatenatedString = filteredLines.join('\n');
-          console.log(concatenatedString);
+          // console.log(concatenatedString);
 
           // if too many lines, too rules directly
           const lineLimit = LIMITS.LINE_LIMIT;
@@ -159,7 +142,7 @@ export default function ResumeParser() {
             console.time('callGptTime for' + filteredLines.length + ' lines');
             const resumeAi = await callGpt(concatenatedString);
             console.timeEnd('callGptTime for' + filteredLines.length + ' lines');
-            if (resumeAi.profile.name === dummyName) {
+            if (resumeAi.profile.name === DUMMY_RESUME.profile.name) {
               handleUpdateResumes(resumeRule);
             } else {
               handleUpdateResumes(resumeAi);

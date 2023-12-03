@@ -74,8 +74,8 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Request timed out' });
       return;
     }
-    
-    console.log(completion.choices[0])
+    // console.log(completion.choices[0])
+    console.log('Successfully parsed resume via GPT');
     res.status(200).json({ text: completion.choices[0] });
   }
   catch (err) {
