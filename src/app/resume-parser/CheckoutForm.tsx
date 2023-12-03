@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 type Props = {
