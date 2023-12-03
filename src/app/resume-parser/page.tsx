@@ -211,13 +211,13 @@ export default function ResumeParser() {
             </div>}   
             {resumes.length > displayLimit && 
             <p className="text-gray-500 mt-2 text-xs">
-               <span className="font-semibold">First {LIMITS.DEFAULT_DISPLAY_LIMIT} resumes are shown above for your preview. Pay {Math.max(resumes.length * 0.1, 1)} USD to download all {resumes.length} resumes.</span>
+               <span className="font-semibold">First {LIMITS.DEFAULT_DISPLAY_LIMIT} resumes are shown above for your preview. Pay {Math.max(resumes.length * 0.1 - 0.3, 1)} USD to download all parsed {resumes.length} resumes.</span>
             </p>}
 
             {resumes.length > displayLimit && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={Math.max(resumes.length * 0.1, 1)} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
+                <CheckoutForm amount={Math.max(resumes.length * 0.1 - 0.3, 1)} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
               </Elements>
             </div>
             }
