@@ -7,7 +7,7 @@ interface ResumeDisplayProps {
 }
 
 export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes, limit }) => {
-  const headers = ['Name', 'Email', 'Phone', 'Location', 'Experience', 'Education'];
+  const headers = ['Name', 'Email', 'Phone', 'Location', 'Experience', 'Education', 'Summary'];
   return (
     <table className="min-w-full divide-y divide-gray-200 mt-4">
             <thead className="bg-gray-50">
@@ -52,6 +52,10 @@ export const ResumeDisplay: React.FC<ResumeDisplayProps> = ({ resumes, limit }) 
             }).join("\n").split('\n').map((item, key) => {
                 return <span key={key}>{item}<br/><br/></span>
             })}
+            </td>
+
+            <td className="px-6 py-4 text-sm text-gray-500">
+                {resume.profile.summary || ""}
             </td>
             
             </tr>

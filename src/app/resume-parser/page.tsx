@@ -129,7 +129,12 @@ export default function ResumeParser() {
             const line = lines[i].map(item => item.text).join(' ');
             const textWidth = (lines[i].map(item => item.width).reduce((sum, current) => sum + current, 0));
             const itemCounts = lines[i].length
-            const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0);         
+            const lineStartsWithLowercase = line.charAt(0).toLowerCase() === line.charAt(0); 
+            // first 30 lines are always important, keep them
+            if (i < 30) {
+              filteredLines.push(line);
+              continue;
+            }                    
             if (!BULLET_POINTS.some(bullet => line[0].includes(bullet)) && 
                 !(previousLineContainsBullet && lineStartsWithLowercase) && (textWidth < LIMITS.PIXEL_WIDTH_LIMIT || itemCounts > 1)) {
               filteredLines.push(line);
@@ -194,9 +199,10 @@ export default function ResumeParser() {
               AI-powered engine takes time to comprehend your resumes. Please stay on this page until the parsing is finished.
               </p>}
             {fileUrl !== '' && <ProgressBar duration={progressBarDuration * LIMITS.DEFAULT_WAITTIME} isFinished={isParsingFinished} />}
-            <div id="resumeDisplay">
+
+            {fileUrl !== '' && <div id="resumeDisplay">
               <ResumeDisplay resumes={resumes} limit={displayLimit} />
-            </div>
+            </div>}
             {(isPaid || (resumes.length <= displayLimit && resumes.length > 0)) && <div>
               <button 
                 id="exportButton" 
