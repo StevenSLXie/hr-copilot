@@ -167,10 +167,10 @@ export default function ResumeParser() {
             <Paragraph>
               <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy. 
             </Paragraph>
-            <p className="mt-2 text-base"> - Free for first 3 resumes </p>  
-            <p className="text-base"> - Pay 0.1 USD per resume for more than 3 resumes, with a minimal charge of 1 USD </p> 
-            <p className="text-base"> - No registration, no credit/plan. Pay as you use </p>
-            <p className="text-base"> - Reach out to us via <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> for feedbacks and customized solutions </p>
+            <p className="mt-2 text-base"> - The first 3 resumes are processed for free. </p>  
+            <p className="text-base"> - For any additional resumes beyond the first 3, there's a charge of $0.1 USD per resume, with a minimum total charge of $1 USD. </p> 
+            <p className="text-base"> - No need to signup or subscribe. You only pay for what you use. </p>
+            <p className="text-base"> - We welcome your feedback and inquiries about customized solutions. Please contact us at <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> </p>
             
             <div className="mt-3">
               <ResumeDropzone
