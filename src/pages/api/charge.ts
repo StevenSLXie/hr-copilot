@@ -6,6 +6,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { payment_method_id, amount } = req.body;
   console.log('payment_method_id', payment_method_id);
+  console.log('amount', amount);
+  console.log('stripe_secret_key', process.env.STRIPE_SECRET_KEY)
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
@@ -19,5 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ id: paymentIntent.id });
   } catch (error) {
     res.status(500).json({ error: (error as Error).message  });
+    console.log('error', (error as Error).message);
   }
 };
