@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata = {
   title: "Recruitment Copilot - Every Recruiter Needs a Copilot",
   description:
-    "Recruitment Copilot parses PDF resumes in batches and parse them into a Excel",
+    "Free trials. No signup needed. Recruitment Copilot parses PDF resumes in batches and save them in a Excel file",
 };
 
 export default function RootLayout({
