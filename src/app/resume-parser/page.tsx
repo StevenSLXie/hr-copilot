@@ -50,6 +50,7 @@ export default function ResumeParser() {
   const [isParsingFinished, setIsParsingFinished] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(LIMITS.DEFAULT_DISPLAY_LIMIT);
   const [isPaid, setIsPaid] = useState(false); 
+  const [isPaymentFailed, setIsPaymentFailed] = useState(false); 
   const [progressBarDuration, setProgressBarDuration] = useState(1000000);
 
   const handleUpdateResumes = (resume: ResumeType) => {
@@ -59,6 +60,10 @@ export default function ResumeParser() {
   const handlePaymentSuccess = () => {
     setDisplayLimit(LIMITS.MAX_INT);
     setIsPaid(true);
+  };
+
+  const handlePaymentFailure = () => {
+    setIsPaymentFailed(true);
   };
 
   const saveTableToExcel = () => {
@@ -206,10 +211,13 @@ export default function ResumeParser() {
             {resumes.length > displayLimit && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={Math.max(resumes.length * 0.1, 1)} onPaymentSuccess={handlePaymentSuccess}/>
+                <CheckoutForm amount={Math.max(resumes.length * 0.1, 1)} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
               </Elements>
             </div>
             }
+
+            {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
+
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
               - <span className="font-semibold"> If you're interested in accessing the full version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>

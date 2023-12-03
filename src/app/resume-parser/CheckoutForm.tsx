@@ -3,9 +3,10 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 type Props = {
   amount: number;
   onPaymentSuccess?: () => void;
+  onPaymentFailure?: (errorMessage: string) => void;
 };
 
-const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess }) => {
+const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess, onPaymentFailure }) => {
   const stripe = useStripe();
   const payAmount = amount;
   const elements = useElements();
@@ -38,6 +39,7 @@ const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess }) => {
 
       if (result.error) {
         console.error(result.error.message);
+        onPaymentFailure?.(result.error.message);
       } else {
         console.log('Payment successful, amount charged is: ', amount, ' dollars');
         onPaymentSuccess?.();
