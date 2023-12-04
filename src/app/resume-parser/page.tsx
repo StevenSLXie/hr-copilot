@@ -180,7 +180,7 @@ export default function ResumeParser() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Recruitment Copilot
+              Resume Parser
             </Heading>
             <Paragraph>
               <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy. 
@@ -189,7 +189,7 @@ export default function ResumeParser() {
               <li>The first 3 resumes are processed for free.</li>
               <li>For any additional resumes beyond the first 3, there's a charge of $0.1 USD per resume, with a minimum total charge of $1 USD.</li>
               <li>No need to signup or subscribe. You only pay for what you use.</li>
-              <li>We welcome your feedback and inquiries about customized solutions. Please contact us at <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a></li>
+              <li>Grab your coupon for free parsing now! Limited availability. Contact us at <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> today!</li>
             </ul>
             
             <div className="mt-3">
