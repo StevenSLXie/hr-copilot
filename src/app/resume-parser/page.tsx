@@ -185,12 +185,6 @@ export default function ResumeParser() {
             <Paragraph>
               <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy. 
             </Paragraph>
-            <ul className="mt-2 text-base list-disc list-inside pl-5">
-              <li>The first 3 resumes are processed for free.</li>
-              <li>For any additional resumes beyond the first 3, there's a charge of $0.1 USD per resume, with a minimum total charge of $1 USD.</li>
-              <li>No need to signup or subscribe. You only pay for what you use.</li>
-              <li>Grab your coupon for free parsing now! Limited availability. Contact us at <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> today!</li>
-            </ul>
             
             <div className="mt-3">
               <ResumeDropzone
@@ -200,6 +194,14 @@ export default function ResumeParser() {
                 playgroundView={true}
               />
             </div>
+
+            <ul className="mt-2 text-base list-disc list-inside pl-5">
+              <li>The first 3 resumes are processed for free.</li>
+              <li>For any additional resumes beyond the first 3, there's a charge of $0.1 USD per resume, with a minimum total charge of $1 USD.</li>
+              <li>No need to signup or subscribe. You only pay for what you use. Preview first, pay later</li>
+              <li>Grab your coupon for free parsing now! Limited availability. Contact us at <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> today!</li>
+            </ul>
+
             {fileUrl !== '' && <Heading level={2} className="text-primary !mt-4">
               Resume Parsing Results
             </Heading>}
