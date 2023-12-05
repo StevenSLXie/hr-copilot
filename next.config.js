@@ -7,15 +7,15 @@ const nextConfig = {
   // https://github.com/mozilla/pdf.js/issues/16214
   output: 'standalone',
 
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/', // replace '/about' with your desired route
-        permanent: true,
-      },
-    ]
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/',
+  //       destination: '/', // replace '/about' with your desired route
+  //       permanent: true,
+  //     },
+  //   ]
+  // },
 
   webpack: (config) => {
     // Setting resolve.alias to false tells webpack to ignore a module
