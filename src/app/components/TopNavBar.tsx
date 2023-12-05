@@ -19,8 +19,8 @@ export const TopNavBar = () => {
       )}
     >
       <div className="flex h-15 w-full items-center justify-between">
-        <Link href="/resume-parser">
-          <span className="sr-only">HR Copilot</span>
+        <Link href="/">
+          <span className="sr-only">Recruitment Copilot</span>
           <Image
             src={logoSrc}
             alt="HR Copilot"

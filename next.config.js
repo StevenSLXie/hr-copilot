@@ -11,7 +11,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/resume-parser', // replace '/about' with your desired route
+        destination: '/', // replace '/about' with your desired route
         permanent: true,
       },
     ]
