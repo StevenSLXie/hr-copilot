@@ -257,8 +257,6 @@ export default function ResumeParser() {
                 </button>
             </div>
           } 
-
-
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
 
             <hr className="border-gray-500 mt-4" />
