@@ -54,6 +54,14 @@ export const initialCustom = {
   descriptions: [],
 };
 
+export const initialInsights = {
+  careerHighlights: [],
+  strengths: [],
+  weaknesses: [],
+  growthPotential: [],
+};
+
+
 export const initialResumeState: Resume = {
   profile: initialProfile,
   workExperiences: [initialWorkExperience],
@@ -61,6 +69,7 @@ export const initialResumeState: Resume = {
   projects: [initialProject],
   skills: initialSkills,
   custom: initialCustom,
+  insights: initialInsights,
 };
 
 // Keep the field & value type in sync with CreateHandleChangeArgsWithDescriptions (components\ResumeForm\types.ts)
