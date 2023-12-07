@@ -41,6 +41,12 @@ const prompt = `{
   },
   "custom": {
     "descriptions": []
+  },
+  "insights": {
+    "careerHighlights": [],
+    "strengths": [],
+    "weaknesses": [],
+    "growthPotential": [],
   }
 }`;
 
@@ -51,8 +57,7 @@ export default async function handler(req, res) {
         {
           "role": "system", 
           "content": "The following text is extracted from a resume; parse them into the following format:" 
-          + JSON.stringify(prompt) + ". You must return in the prescribed format."
-          // "content": "look at the resume. How many jobs the person has had?"
+          + JSON.stringify(prompt) + ". You must return in the prescribed format. The other parts should just be extrated from the text. The insights should be summarized from the perspectives of an experienced HR, each with no more than 2 sentences. Be concise and critical!"
         },
         {
           "role": "user", 
@@ -74,7 +79,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Request timed out' });
       return;
     }
-    // console.log(completion.choices[0])
+    console.log(completion.choices[0])
     console.log('Successfully parsed resume via GPT');
     res.status(200).json({ text: completion.choices[0] });
   }

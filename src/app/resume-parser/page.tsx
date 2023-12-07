@@ -153,18 +153,19 @@ export default function ResumeParser() {
           // console.log(concatenatedString);
 
           // if too many lines, too rules directly
-          const lineLimit = LIMITS.LINE_LIMIT;
-          if (filteredLines.length > lineLimit){
+          const processLines = async (lines: string, lineCount: number) => {
+            console.time(`callGptTime for ${lineCount} lines`);
+            const resumeAi = await callGpt(lines);
+            console.timeEnd(`callGptTime for ${lineCount} lines`);
+            handleUpdateResumes(resumeAi.profile.name === DUMMY_RESUME.profile.name ? resumeRule : resumeAi);
+          }
+          
+          if (lines.length < LIMITS.UNCUT_LINE_LIMIT) {
+            processLines(lines.map(line => line.map(item => item.text).join(' ')).join('\n'), lines.length);
+          } else if (filteredLines.length < LIMITS.LINE_LIMIT) {
+            processLines(concatenatedString, filteredLines.length);
+          } else {
             handleUpdateResumes(resumeRule);
-          }else {
-            console.time('callGptTime for' + filteredLines.length + ' lines');
-            const resumeAi = await callGpt(concatenatedString);
-            console.timeEnd('callGptTime for' + filteredLines.length + ' lines');
-            if (resumeAi.profile.name === DUMMY_RESUME.profile.name) {
-              handleUpdateResumes(resumeRule);
-            } else {
-              handleUpdateResumes(resumeAi);
-            }
           }
       });
       await Promise.all(processingPromises);
@@ -183,6 +184,7 @@ export default function ResumeParser() {
               Resume Parser
             </Heading>
             <Paragraph>
+              Not just another resume parser. Get AI-powered insights on your candidates. Save 99% time on resume screening. <br />
               <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy. 
             </Paragraph>
             
