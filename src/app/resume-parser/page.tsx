@@ -183,7 +183,7 @@ export default function ResumeParser() {
               Resume AI Parser
             </Heading>
             <Paragraph>
-              Not just another resume parser. Get AI-powered insights on your candidates. Save 99% time on resume screening. <br />
+              Not just another resume parser. Get AI-powered insights on your candidates. Save 99% time on resume screening. <br /><br />
               Try it now! <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, analysis and Excel download, with 99% accuracy. 
             </Paragraph>
             
