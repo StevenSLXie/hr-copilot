@@ -161,9 +161,9 @@ export default function ResumeParser() {
           }
           
           if (lines.length < LIMITS.UNCUT_LINE_LIMIT) {
-            processLines(lines.map(line => line.map(item => item.text).join(' ')).join('\n'), lines.length);
+            await processLines(lines.map(line => line.map(item => item.text).join(' ')).join('\n'), lines.length);
           } else if (filteredLines.length < LIMITS.LINE_LIMIT) {
-            processLines(concatenatedString, filteredLines.length);
+            await processLines(concatenatedString, filteredLines.length);
           } else {
             handleUpdateResumes(resumeRule);
           }
@@ -185,7 +185,7 @@ export default function ResumeParser() {
             </Heading>
             <Paragraph>
               Not just another resume parser. Get AI-powered insights on your candidates. Save 99% time on resume screening. <br />
-              <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, and Excel download, with 99% accuracy. 
+              <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, analysis and Excel download, with 99% accuracy. 
             </Paragraph>
             
             <div className="mt-3">
