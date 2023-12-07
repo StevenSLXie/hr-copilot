@@ -150,7 +150,6 @@ export default function ResumeParser() {
             previousLineContainsBullet = BULLET_POINTS.some(bullet => line[0].includes(bullet));
           }
           const concatenatedString = filteredLines.join('\n');
-          // console.log(concatenatedString);
 
           // if too many lines, too rules directly
           const processLines = async (lines: string, lineCount: number) => {
@@ -181,11 +180,11 @@ export default function ResumeParser() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume Parser
+              Resume AI Parser
             </Heading>
             <Paragraph>
               Not just another resume parser. Get AI-powered insights on your candidates. Save 99% time on resume screening. <br />
-              <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, analysis and Excel download, with 99% accuracy. 
+              Try it now! <span className="font-semibold">Upload .pdf resumes in batch </span>for processing, aggregation, analysis and Excel download, with 99% accuracy. 
             </Paragraph>
             
             <div className="mt-3">
