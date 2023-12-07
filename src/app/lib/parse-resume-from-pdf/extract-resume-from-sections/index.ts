@@ -38,5 +38,11 @@ export const extractResumeFromSections = (
     custom: {
       descriptions: [],
     },
+    insights: {
+      careerHighlights: [],
+      strengths: [],
+      weaknesses: [],
+      growthPotential: [],
+    },
   };
 };
