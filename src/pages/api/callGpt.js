@@ -64,7 +64,7 @@ export default async function handler(req, res) {
           "content": JSON.stringify(req.body.text)
         }
       ],
-      model: "gpt-3.5-turbo-1106", //"gpt-3.5-turbo", //"gpt-4-1106-preview", //
+      model: "gpt-3.5-turbo-1106",
     });
     
     const timeoutPromise = new Promise((_, reject) =>
