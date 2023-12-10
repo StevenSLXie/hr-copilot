@@ -5,7 +5,6 @@ import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-it
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { Heading, Link, Paragraph } from "components/documentation";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
-import type { Resume as ResumeType } from "lib/redux/types";
 import { LIMITS, DUMMY_RESUME, VOUCHERS } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
@@ -14,7 +13,7 @@ import { loadStripe } from '@stripe/stripe-js';
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export default function ResumeParser() {
+export default function ResumeAnalyzer() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [displayLimit, setDisplayLimit] = useState(LIMITS.DEFAULT_DISPLAY_LIMIT);
   const [isPaid, setIsPaid] = useState(false); 
@@ -45,8 +44,6 @@ export default function ResumeParser() {
         // Convert the chunk to a string
         const text = new TextDecoder().decode(value);
         setOutputText(prevText => prevText + text);
-        // Display the text
-        console.log(text);
         // Read the next chunk
         return readNextChunk();
       });
@@ -132,9 +129,9 @@ export default function ResumeParser() {
             
             {
               (isPaid ? outputText : outputText.split(/\s+/).slice(0, LIMITS.ANALYZER_PREVIEW_LIMIT).join(' '))
-                .split(/(summary:|strength:|weakness:|verdict:|questions:|salary:|[1-9]\.)/i)
+                .split(/(summary:|strength:|weakness:|verdict:|questions:|salary:|(?<![0-9])[1-9]\.)/i)
                 .map((part, index) => {
-                  const isKeyword = /^(summary:|strength:|weakness:|verdict:|questions:|salary:|[1-9]\.)/i.test(part);
+                  const isKeyword = /^(summary:|strength:|weakness:|verdict:|questions:|salary:|(?<![0-9])[1-9]\.)/i.test(part);
                   return (
                     <p key={index} className="text-gray-500 mt-2 text-md font-mono ml-3 mr-3">
                       {isKeyword ? <strong>{part}</strong> : part}
