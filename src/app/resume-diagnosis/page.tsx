@@ -16,12 +16,9 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
-  const [resumes, setResumes] = useState<ResumeType[]>([]);
-  const [isParsingFinished, setIsParsingFinished] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(LIMITS.DEFAULT_DISPLAY_LIMIT);
   const [isPaid, setIsPaid] = useState(false); 
   const [isPaymentFailed, setIsPaymentFailed] = useState(false); 
-  const [progressBarDuration, setProgressBarDuration] = useState(1000000);
   const [voucherCode, setVoucherCode] = useState('');
   const [outputText, setOutputText] = useState('');
 
@@ -81,14 +78,11 @@ export default function ResumeParser() {
   useEffect(() => {
     async function test() {
       if (fileUrl === '') {
-        setResumes([]);
+        setOutputText('');
       }
 
-      setIsParsingFinished(false);
-      setProgressBarDuration(fileUrl ? fileUrl.split(';;;').length - 1 : 0);
       const fileUrls = fileUrl.split(';;;');
       const filesToProcess = fileUrls.length > 1 ? 1 : fileUrls.length - 1;
-      setProgressBarDuration(filesToProcess > 0 ? filesToProcess : 0);
       const processingPromises = fileUrls.slice(0, filesToProcess).map(async (fileUrl) => {
           const fileExtension = 'pdf'; //fileUrl.split('.').pop();
           console.log(`File extension: ${fileUrl} ${fileExtension}`);
@@ -105,7 +99,6 @@ export default function ResumeParser() {
           await callStream(lines.map(line => line.map(item => item.text).join(' ')).join('\n'))
       });
       await Promise.all(processingPromises);
-      setIsParsingFinished(true);
     }
     test();
   }, [fileUrl]);
@@ -117,12 +110,12 @@ export default function ResumeParser() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume AI Checker
+              Resume AI Analyzer
             </Heading>
             <Paragraph>
-              Submitted over 500 resumes with no responses? Get your resume analyzed today for a better chance at catching employers' attention! <br />
-              Powered by AI engines, this checker analyzes your resume in terms of your strengths, weaknesses, and questions you may be asked during an interview. <br />
-              Try it now! Upload your pdf resumes. No signup, no subscription. Preview first, pay only when you're satisfied.
+              - Submitted over 500 resumes with no responses? Get your resume analyzed today for a better chance at catching employers' attention! <br />
+              - Powered by AI engines, this analyzed scans your resume in terms of your strengths, weaknesses, and questions you may be asked during an interview. <br />
+              - Try it now! Upload your pdf resumes. No signup, no subscription. Preview first, pay only when you're satisfied.
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -134,36 +127,48 @@ export default function ResumeParser() {
             </div>
 
             {fileUrl !== '' && <Heading level={2} className="text-primary !mt-4">
-              Resume Parsing Results
+              Analysis Report
             </Heading>}
             
             {
-              outputText.split(/(summary:|strength:|weakness:|verdict:|questions:)/i).map((part, index) => (
-                <p key={index} className="text-gray-500 mt-2 text-md font-semibold ml-3 mr-3">
-                  {part}
-                </p>
-              ))
+              (isPaid ? outputText : outputText.split(/\s+/).slice(0, LIMITS.ANALYZER_PREVIEW_LIMIT).join(' '))
+                .split(/(summary:|strength:|weakness:|verdict:|questions:|salary:|[1-9]\.)/i)
+                .map((part, index) => {
+                  const isKeyword = /^(summary:|strength:|weakness:|verdict:|questions:|salary:|[1-9]\.)/i.test(part);
+                  return (
+                    <p key={index} className="text-gray-500 mt-2 text-md font-mono ml-3 mr-3">
+                      {isKeyword ? <strong>{part}</strong> : part}
+                    </p>
+                  );
+                })
             }
 
-            {resumes.length > displayLimit && 
-            <p className="text-gray-500 mt-2 text-xs font-semibold">
-              - Enter you bank details and pay {Math.max(resumes.length * 0.1 - 0.3, 1)} USD to download all parsed {resumes.length} resumes. OR
+            {outputText.length > 0 && <Paragraph>
+              The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 5 parts: verdict, weakness, strength, summary, simulated questions and salary information. 
+              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay 1.99 USD to get the full report.
+            </Paragraph> }
+
+            {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
+
+            {outputText.length > 0 && 
+            <p className="text-gray-500 mt-2 text-sm font-semibold">
+              - Enter you bank details and pay 1.99 USD to get the full report. OR
             </p>}
 
-            {resumes.length > displayLimit && 
-            <p className="text-gray-500 mt-2 text-xs font-semibold">
+            {outputText.length > 0 && 
+            <p className="text-gray-500 mt-2 text-sm font-semibold">
               - If you have been given a coupon, please enter your coupon code
             </p>}
 
-            {resumes.length > displayLimit && 
+            {outputText.length > 0 && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={Math.max(resumes.length * 0.1 - 0.3, 1)} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
+                <CheckoutForm amount={1.99} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
               </Elements>
             </div>
             }
 
-            {resumes.length > displayLimit && 
+            {outputText.length > 0 && 
             <div id="voucherInput" className="flex items-center mt-2">
                 <input 
                   type="text" 
