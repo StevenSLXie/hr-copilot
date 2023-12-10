@@ -111,7 +111,7 @@ export default function ResumeAnalyzer() {
             </Heading>
             <Paragraph>
               - Submitted over 500 resumes with no responses? Get your resume analyzed today for a better chance at catching employers' attention! <br />
-              - Powered by AI engines, this analyzed scans your resume in terms of your strengths, weaknesses, and questions you may be asked during an interview. <br />
+              - Powered by AI engines, this analyzed scans your resume in terms of your strengths, weaknesses, expected salary and questions you may be asked during an interview. <br />
               - Try it now! Upload your pdf resumes. No signup, no subscription. Preview first, pay only when you're satisfied.
             </Paragraph>
             <div className="mt-3">
@@ -141,7 +141,7 @@ export default function ResumeAnalyzer() {
             }
 
             {outputText.length > 0 && !isPaid && <Paragraph>
-              The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 5 parts: verdict, weakness, strength, summary, simulated questions and salary information. 
+              The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 6 parts: verdict, weakness, strength, summary, simulated questions and salary information. 
               It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!.
             </Paragraph> }
 
