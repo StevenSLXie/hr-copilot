@@ -140,9 +140,9 @@ export default function ResumeAnalyzer() {
                 })
             }
 
-            {outputText.length > 0 && <Paragraph>
+            {outputText.length > 0 && !isPaid && <Paragraph>
               The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 5 parts: verdict, weakness, strength, summary, simulated questions and salary information. 
-              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay 1.99 USD to get the full report.
+              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!.
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
