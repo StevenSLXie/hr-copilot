@@ -110,9 +110,9 @@ export default function ResumeAnalyzer() {
               Resume AI Analyzer
             </Heading>
             <Paragraph>
-              - Submitted over 500 resumes with no responses? Get your resume analyzed today for a better chance at catching employers' attention! <br />
-              - Powered by AI engines, this analyzed scans your resume in terms of your strengths, weaknesses, expected salary and questions you may be asked during an interview. <br />
-              - Try it now! Upload your pdf resumes. No signup, no subscription. Preview first, pay only when you're satisfied.
+              - Struggling with job applications? Boost your chances with our AI-powered resume analyzer! <br />
+              - Uncover your strengths, weaknesses, salary expectations, and potential interview questions. <br />
+              - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied."
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -186,7 +186,7 @@ export default function ResumeAnalyzer() {
 
             <hr className="border-gray-500 mt-4" />
             <p className="text-black-500 mt-2 text-xs">
-              - <span className="font-semibold"> If you're interested in accessing the full version of Recruitment Copilot or have any suggestions, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
+              - <span className="font-semibold"> If you encounter any payment issue, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
             </p>    
             <p className="text-gray-500 mt-2 text-xs">
               - Recruitment Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
