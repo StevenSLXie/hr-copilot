@@ -112,7 +112,7 @@ export default function ResumeAnalyzer() {
             <Paragraph>
               - Struggling with job applications? Boost your chances with our AI-powered resume analyzer! <br />
               - Uncover your strengths, weaknesses, salary expectations, and potential interview questions. <br />
-              - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied."
+              - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied.
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
