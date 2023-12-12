@@ -112,10 +112,10 @@ export default function ResumeAnalyzer() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume AI Analyzer
+              Resume Copilot
             </Heading>
             <Paragraph>
-              - Struggling with job applications? Boost your chances with our AI-powered resume analyzer! <br />
+              - Struggling with job applications? Get instant feedbacks on your resume! <br />
               - Uncover your strengths, weaknesses, salary expectations, and potential interview questions. <br />
               - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied.
             </Paragraph>
@@ -150,8 +150,8 @@ export default function ResumeAnalyzer() {
             }
 
             {outputText.length > 0 && !isPaid && <Paragraph>
-              The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 6 parts: verdict, weakness, strength, summary, simulated questions and salary information. 
-              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!.
+              The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 6 parts: verdict, summary, weakness, strength, simulated questions and salary information. 
+              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
