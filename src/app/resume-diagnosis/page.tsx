@@ -165,7 +165,7 @@ export default function ResumeAnalyzer() {
             </div>
             }
 
-            {outputText.length > 0 && 
+            {/* {outputText.length > 0 && 
             <div id="voucherInput" className="flex items-center mt-2">
                 <input 
                   type="text" 
@@ -181,7 +181,8 @@ export default function ResumeAnalyzer() {
                   Redeem Coupon
                 </button>
             </div>
-          } 
+            } */}
+
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
 
             <hr className="border-gray-500 mt-4" />
