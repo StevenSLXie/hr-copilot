@@ -9,6 +9,7 @@ import { LIMITS, DUMMY_RESUME, VOUCHERS } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import React from "react";
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -72,6 +73,10 @@ export default function ResumeAnalyzer() {
     }
   };
 
+  const KEYWORDS = ["Summary:", "Strength:", "Weakness:", "Verdict:", "Questions:", "Salary:"];
+  // const regex = new RegExp(`(${KEYWORDS.join('|')})`, 'i');
+  const regex = new RegExp(`(${KEYWORDS.join('|')})`);
+
   useEffect(() => {
     async function test() {
       if (fileUrl === '') {
@@ -127,15 +132,19 @@ export default function ResumeAnalyzer() {
               Analysis Report
             </Heading>}
             
+          
             {
               (isPaid ? outputText : outputText.split(/\s+/).slice(0, LIMITS.ANALYZER_PREVIEW_LIMIT).join(' '))
-                .split(/(summary:|strength:|weakness:|verdict:|questions:|salary:|(?<![0-9])[1-9]\.)/i)
+                .split(regex)
                 .map((part, index) => {
-                  const isKeyword = /^(summary:|strength:|weakness:|verdict:|questions:|salary:|(?<![0-9])[1-9]\.)/i.test(part);
+                  const isKeyword = KEYWORDS.includes(part);
                   return (
-                    <p key={index} className="text-gray-500 mt-2 text-md font-mono ml-3 mr-3">
-                      {isKeyword ? <strong>{part}</strong> : part}
+                    <React.Fragment key={index}>
+                    <p className="text-gray-500 mt-2 text-md font-mono ml-3 mr-3">
+                      {isKeyword ? <strong>{part}</strong> : part }
                     </p>
+                    {!isKeyword && fileUrl != '' && <hr className="border-gray-500 mt-4" />}
+                    </React.Fragment>
                   );
                 })
             }
@@ -149,13 +158,13 @@ export default function ResumeAnalyzer() {
 
             {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
-              - Enter you bank details and pay 1.99 USD to get the full report. OR
+              - Enter your card details and pay 1.99 USD to get the full report.
             </p>}
 
-            {outputText.length > 0 && 
+            {/* {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
               - If you have been given a coupon, please enter your coupon code
-            </p>}
+            </p>} */}
 
             {outputText.length > 0 && 
             <div id="checkoutButton">

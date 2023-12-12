@@ -8,13 +8,13 @@ const openai = new OpenAI();
 export const runtime = 'edge';
 
 const guidelines = 
-              "1. Verdict: overall competence of the resume on a scale of 1-100? must have reasoning, must tell the scale; " + 
+              "1. Verdict: overall competence of the resume on a scale of 1-100? must have reasoning, in the format of xx/100" + 
               "2. Summary: the summary should be one sentence, highlighting the candiate's biggest strength, selling point;" + 
-              "3. Weakness: highlight 4-6 points that the candidate is not strong about and how can the resume be polished to hide them. give examples, be critical;" + 
+              "3. Weakness: highlight 4-6 points that the candidate is not strong about and how can the resume be polished to hide them. give examples, be specific and critical and detailed;" + 
               "4. Stength: highlight 2-3 points that the candidate is strong about and how can the resume be polished to highlight them. give concise examples; " +
               "5. Questions: list 5 questions you would ask if you are the hiring manager in order to deep dive into the candaiate's weakness. Must be specific. each question one line;" +
               "6. Salary: based on the resume, guess the salary range of the candidate given his location. Propose the future salary range if the candidate is hired." + 
-              "the return should be in the format of verdict: text; summary: text; weakness: text; strength: text; questions: text; salary: text; the index and the dot must be included. The overall response should be around 500 words";
+              "the return should be in the format of verdict- text; summary: text; weakness: text; strength: text; questions: text; salary: text; the index and the dot must be included. The overall response should be around 500 words";
  
 export default async function POST(req: Request) {
   // Extract the `prompt` from the body of the request
@@ -27,7 +27,7 @@ export default async function POST(req: Request) {
     messages: [
       {
         "role": "system", 
-        "content": "Evaluate the following resume in terms of the following: " + guidelines
+        "content": "Evaluate the following resume in terms of the following." + guidelines
       },
       {
         "role": "user", 
