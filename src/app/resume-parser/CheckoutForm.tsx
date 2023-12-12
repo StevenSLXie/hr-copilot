@@ -48,8 +48,8 @@ const CheckoutForm : React.FC<Props> = ({ amount, onPaymentSuccess, onPaymentFai
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-between items-center">
-        <CardElement className='mt-6 w-1/2 ml-4' />
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row justify-between items-center">
+        <CardElement className='mt-6 w-full sm:w-1/2 ml-4' />
         <button type="submit" disabled={!stripe} className="bg-blue-400 hover:bg-blue-600 text-white py-2 px-4 rounded mt-4 sm:w-auto mr-10">
         Pay {payAmount} USD to get full data
         </button>
