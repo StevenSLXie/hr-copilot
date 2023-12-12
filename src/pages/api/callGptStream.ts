@@ -8,7 +8,7 @@ const openai = new OpenAI();
 export const runtime = 'edge';
 
 const guidelines = 
-              "1. Verdict: overall competence of the resume on a scale of 100? must have reasoning, must tell the scale; " + 
+              "1. Verdict: overall competence of the resume on a scale of 1-100? must have reasoning, must tell the scale; " + 
               "2. Summary: the summary should be one sentence, highlighting the candiate's biggest strength, selling point;" + 
               "3. Weakness: highlight 4-6 points that the candidate is not strong about and how can the resume be polished to hide them. give examples, be critical;" + 
               "4. Stength: highlight 2-3 points that the candidate is strong about and how can the resume be polished to highlight them. give concise examples; " +

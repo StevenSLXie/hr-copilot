@@ -3,9 +3,9 @@ import { TopNavBar } from "components/TopNavBar";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
-  title: "Recruitment Copilot - Every Recruiter Needs a Copilot",
+  title: "Recruitment Copilot - Turbocharge your resume",
   description:
-    "Free trials. No signup needed. Recruitment Copilot parses PDF resumes in batches and save them in a Excel file",
+    "Experience our free trial, no signup, no monthly plan! Let Recruitment Copilot turbocharge your resume and skyrocket your job success rate",
 };
 
 export default function RootLayout({
