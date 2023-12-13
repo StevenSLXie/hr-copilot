@@ -297,7 +297,7 @@ export default function ResumeParser() {
                 />
                 <button 
                   onClick={handleVoucherSubmit} 
-                  className="bg-blue-400 hover:bg-blue-600 text-white h-full py-2 px-4 rounded ml-4"
+                  className="bg-slate-900 hover:bg-slate-600 text-white h-full py-2 px-4 rounded ml-4"
                 >
                   Redeem Coupon
                 </button>
