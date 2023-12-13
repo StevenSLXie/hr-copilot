@@ -2,7 +2,7 @@ import type { Resume } from "lib/redux/types";
 
 export const LIMITS = {
   NUM_RESUMES: 100,
-  GPT_TIMEOUT: 50, // a timer inside callGpt, not the maxDuration
+  GPT_TIMEOUT: 60, // a timer inside callGpt, not the maxDuration
   UNCUT_LINE_LIMIT: 100,
   LINE_LIMIT: 300,
   PIXEL_WIDTH_LIMIT: 400,

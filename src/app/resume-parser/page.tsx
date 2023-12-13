@@ -113,29 +113,33 @@ export default function ResumeParser() {
     }
   };
 
-  const saveTableToExcel = () => {
+  const copyTableToClipboard = () => {
     const table = document.getElementById("resumeDisplay");
     if (!table) return;
   
-    // Get all the rows of the table
-    const rows = table.querySelectorAll("tr");
-    // Initialize an empty array to hold the table data
-    const data = [];
-    // Loop through each row
-    for (const row of rows) {
-      // Get all the cells in the row
-      const cells = row.querySelectorAll("td, th");
-      // Get the text content of each cell and add it to the data array
-      data.push([...cells].map(cell => cell.textContent || ""));
+    // Create a Range object and set its boundaries to encompass the entire table
+    const range = document.createRange();
+    range.selectNode(table);
+  
+    // Clear the current selection and add the new range
+    const selection = window.getSelection();
+    if (selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
     }
-    // Create a worksheet
-    const ws = utils.aoa_to_sheet(data);
-    // Create a new workbook
-    const wb = utils.book_new();
-    // Append the worksheet to the workbook
-    utils.book_append_sheet(wb, ws, "Sheet1");
-    // Write the workbook to a file
-    writeFile(wb, "resume_info.xlsx");
+  
+    // Copy the selection to the clipboard
+    try {
+      document.execCommand('copy');
+      alert('Table copied to clipboard. Paste it in Excel.');
+    } catch (err) {
+      alert('Unable to copy table to clipboard');
+    }
+  
+    // Clear the selection
+    if (selection) {
+      selection.removeAllRanges();
+    }
   };
 
 
@@ -193,7 +197,6 @@ export default function ResumeParser() {
           // if too many lines, too rules directly
           const processLines = async (lines: string, lineCount: number) => {
             console.time(`callGptTime for ${lineCount} lines`);
-            await callStream(lines);
             const resumeAi = await callGpt(lines);
             console.timeEnd(`callGptTime for ${lineCount} lines`);
             handleUpdateResumes(resumeAi.profile.name === DUMMY_RESUME.profile.name ? resumeRule : resumeAi);
@@ -257,8 +260,8 @@ export default function ResumeParser() {
             {(isPaid || (resumes.length <= displayLimit && resumes.length > 0)) && <div>
               <button 
                 id="exportButton" 
-                className="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mt-4"
-                onClick={saveTableToExcel}>Download Table</button>
+                className="bg-slate-900 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded mt-4"
+                onClick={copyTableToClipboard}>Copy Table</button>
             </div>}   
             {resumes.length > displayLimit && 
             <p className="text-gray-500 mt-2 text-xs font-semibold">
