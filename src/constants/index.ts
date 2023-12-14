@@ -9,7 +9,7 @@ export const LIMITS = {
   DEFAULT_WAITTIME: 40000,
   DEFAULT_DISPLAY_LIMIT: 3,
   MAX_INT: 1000000,
-  ANALYZER_PREVIEW_LIMIT: 120,
+  ANALYZER_PREVIEW_LIMIT: 0.3,
 };
 
 export const VOUCHERS = [
@@ -19,6 +19,24 @@ export const VOUCHERS = [
   'W9X0Y1Z2A3B4C5D6E7F8G9H0I1J2K3L4',
   'M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0'
 ];
+
+export const ENG_PROMPT = "Evaluate the following resume in terms of the following." + 
+"1. Verdict: overall competence of the resume on a scale of 1-100? must have reasoning, in the format of xx/100" + 
+"2. Summary: the summary should be one sentence, highlighting the candiate's biggest strength, selling point;" + 
+"3. Weakness: highlight 4-6 points that the candidate is not strong about and how can the resume be polished to hide them. give examples, be specific and critical and detailed;" + 
+"4. Stength: highlight 2-3 points that the candidate is strong about and how can the resume be polished to highlight them. give concise examples; " +
+"5. Questions: list 5 questions you would ask if you are the hiring manager in order to deep dive into the candaiate's weakness. Must be specific. each question one line;" +
+"6. Salary: based on the resume, guess the salary range of the candidate given his location. Propose the future salary range if the candidate is hired." + 
+"the return should be in the format of Verdict: text; Summary: text; Weakness: text; Strength: text; Questions: text; Salary: text; the index and the dot must be included. The overall response should be around 500 words";
+
+export const CMN_PROMPT = "请评估以下简历。" +
+"1. 整体评价：简历的整体能力评分为1-100分？必须有理由，格式为xx/100" +
+"2. 总结：总结应该是一句话，突出候选人的最大优势，卖点；" +
+"3. 缺点：指出候选人简历中的薄弱环节，至少4点，以及如何打磨简历以回避这些点。给出例子,必须尖锐和详细；" +
+"4. 优点：强调候选人擅长的2-3点，以及如何打磨简历以突出它们。给出简明的例子；" +
+"5. 面试问题：如果您是招聘经理，列出8个问题，以便深入了解候选人的弱点和具体的项目经验。必须具体。每个问题1-2行；" +
+"6. 预估薪水：根据简历，猜测候选人的薪水范围，分中国大陆一线城市和二线城市分别讨论。以及如果移民北美，可以期待的薪资。注意：中国大陆薪资远低于北美" +
+"返回值的格式应如下：整体评价：内容；总结：内容；缺点：内容；优点：内容；面试问题：内容；预估薪水：内容；按顺序输出。整体在800字左右";
 
 export const DUMMY_RESUME: Resume = {
   profile: {

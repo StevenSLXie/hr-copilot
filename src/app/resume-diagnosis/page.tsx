@@ -10,6 +10,7 @@ import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import React from "react";
+import {franc} from 'franc'
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -21,6 +22,7 @@ export default function ResumeAnalyzer() {
   const [isPaymentFailed, setIsPaymentFailed] = useState(false); 
   const [voucherCode, setVoucherCode] = useState('');
   const [outputText, setOutputText] = useState('');
+  const [language, setLanguage] = useState('und');
 
   async function callStream(text: string) {
     // Fetch the data from the serverless function
@@ -29,12 +31,11 @@ export default function ResumeAnalyzer() {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ prompt: 'evaluate the following resume in terms of at least 10 aspects' + text })
+    body: JSON.stringify({ resumeText: text })
   })
   .then(response => {
     // Read the response as a stream
     const reader = response.body?.getReader();
-
     // Read the next chunk of data
     function readNextChunk(): Promise<void> {
       return (reader as ReadableStreamDefaultReader).read().then(({ done, value }) => {
@@ -57,6 +58,19 @@ export default function ResumeAnalyzer() {
   });
 }
 
+function countWords(outputText: string, language: string): number {
+  if (language === 'eng') {
+    // English: count the number of spaces and add 1
+    return outputText.split(' ').length;
+  } else if (language === 'cmn') {
+    // Chinese: count the number of characters
+    return outputText.length;
+  } else {
+    // For other languages, return 0 or handle them appropriately
+    return 0;
+  }
+}
+
   const handlePaymentSuccess = () => {
     setDisplayLimit(LIMITS.MAX_INT);
     setIsPaid(true);
@@ -73,7 +87,8 @@ export default function ResumeAnalyzer() {
     }
   };
 
-  const KEYWORDS = ["Summary:", "Strength:", "Weakness:", "Verdict:", "Questions:", "Salary:"];
+  const KEYWORDS = ["Summary:", "Strength:", "Weakness:", "Verdict:", "Questions:", "Salary:", 
+                    "总结：", "优点：", "缺点：", "面试问题：", "预估薪水：", "整体评价："];
   // const regex = new RegExp(`(${KEYWORDS.join('|')})`, 'i');
   const regex = new RegExp(`(${KEYWORDS.join('|')})`);
 
@@ -98,7 +113,8 @@ export default function ResumeAnalyzer() {
             throw new Error(`Unsupported file extension: ${fileExtension}`);
           }
           const lines = groupTextItemsIntoLines(textItems || []);
-          await callStream(lines.map(line => line.map(item => item.text).join(' ')).join('\n'))
+          setLanguage(franc(lines.map(line => line.map(item => item.text).join(' ')).join('\n')));
+          await callStream(lines.map(line => line.map(item => item.text).join(' ')).join('\n'));
       });
       await Promise.all(processingPromises);
     }
@@ -132,9 +148,8 @@ export default function ResumeAnalyzer() {
               Analysis Report
             </Heading>}
             
-          
             {
-              (isPaid ? outputText : outputText.split(/\s+/).slice(0, LIMITS.ANALYZER_PREVIEW_LIMIT).join(' '))
+              (isPaid ? outputText : outputText.slice(0, Math.floor(outputText.length * LIMITS.ANALYZER_PREVIEW_LIMIT)))
                 .split(regex)
                 .map((part, index) => {
                   const isKeyword = KEYWORDS.includes(part);
@@ -150,7 +165,7 @@ export default function ResumeAnalyzer() {
             }
 
             {outputText.length > 0 && !isPaid && <Paragraph>
-              The above is the preview of the reports. The full report has {outputText.split(/\s+/).length} words and consist of 6 parts: verdict, summary, weakness, strength, simulated questions and salary information. 
+              The above is the preview of the reports. The full report has {countWords(outputText, language)} words and consist of 6 parts: verdict, summary, weakness, strength, simulated questions and salary information. 
               It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
