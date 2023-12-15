@@ -136,7 +136,7 @@ export default function ResumeQuestions() {
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
 
-            {outputText.length > 0 && 
+            {outputText.length > 0 && outputText.split("A:").length > 4 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
               - Enter your card details and pay {PRICES.QUESTIONS} USD to get the full report.
             </p>}
@@ -146,7 +146,7 @@ export default function ResumeQuestions() {
               - If you have been given a coupon, please enter your coupon code
             </p>} */}
 
-            {outputText.length > 0 && 
+            {outputText.length > 0 && outputText.split("A:").length > 4 && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
                 <CheckoutForm amount={PRICES.QUESTIONS} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
