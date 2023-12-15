@@ -26,52 +26,18 @@ export default function ResumeAnalyzer() {
   const [outputText, setOutputText] = useState('');
   const [language, setLanguage] = useState('und');
 
-  async function callStream(text: string) {
-    // Fetch the data from the serverless function
-  fetch('/api/callGptStream', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ resumeText: text, type : 'analyzer' })
-  })
-  .then(response => {
-    // Read the response as a stream
-    const reader = response.body?.getReader();
-    // Read the next chunk of data
-    function readNextChunk(): Promise<void> {
-      return (reader as ReadableStreamDefaultReader).read().then(({ done, value }) => {
-        if (done) {
-          // The stream has ended
-          return;
-        }
-        // Convert the chunk to a string
-        const text = new TextDecoder().decode(value);
-        setOutputText(prevText => prevText + text);
-        // Read the next chunk
-        return readNextChunk();
-      });
+  function countWords(outputText: string, language: string): number {
+    if (language === 'eng') {
+      // English: count the number of spaces and add 1
+      return outputText.split(' ').length;
+    } else if (language === 'cmn') {
+      // Chinese: count the number of characters
+      return outputText.length;
+    } else {
+      // For other languages, return 0 or handle them appropriately
+      return 0;
     }
-    // Start reading the stream
-    return readNextChunk();
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-}
-
-function countWords(outputText: string, language: string): number {
-  if (language === 'eng') {
-    // English: count the number of spaces and add 1
-    return outputText.split(' ').length;
-  } else if (language === 'cmn') {
-    // Chinese: count the number of characters
-    return outputText.length;
-  } else {
-    // For other languages, return 0 or handle them appropriately
-    return 0;
   }
-}
 
   const handlePaymentSuccess = () => {
     setDisplayLimit(LIMITS.MAX_INT);

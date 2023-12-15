@@ -12,6 +12,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { FootNote } from "components/FootNote";
 import React from "react";
 import {franc} from 'franc'
+import { postGptStreamReq } from "../../pages/api/postGptStreamReq";
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -25,52 +26,18 @@ export default function ResumeQuestions() {
   const [outputText, setOutputText] = useState('');
   const [language, setLanguage] = useState('und');
 
-  async function callStream(text: string) {
-    // Fetch the data from the serverless function
-  fetch('/api/callGptStream', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ resumeText: text, type: 'questions' })
-  })
-  .then(response => {
-    // Read the response as a stream
-    const reader = response.body?.getReader();
-    // Read the next chunk of data
-    function readNextChunk(): Promise<void> {
-      return (reader as ReadableStreamDefaultReader).read().then(({ done, value }) => {
-        if (done) {
-          // The stream has ended
-          return;
-        }
-        // Convert the chunk to a string
-        const text = new TextDecoder().decode(value);
-        setOutputText(prevText => prevText + text);
-        // Read the next chunk
-        return readNextChunk();
-      });
+    function countWords(outputText: string, language: string): number {
+    if (language === 'eng') {
+        // English: count the number of spaces and add 1
+        return outputText.split(' ').length;
+    } else if (language === 'cmn') {
+        // Chinese: count the number of characters
+        return outputText.length;
+    } else {
+        // For other languages, return 0 or handle them appropriately
+        return 0;
     }
-    // Start reading the stream
-    return readNextChunk();
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-}
-
-function countWords(outputText: string, language: string): number {
-  if (language === 'eng') {
-    // English: count the number of spaces and add 1
-    return outputText.split(' ').length;
-  } else if (language === 'cmn') {
-    // Chinese: count the number of characters
-    return outputText.length;
-  } else {
-    // For other languages, return 0 or handle them appropriately
-    return 0;
-  }
-}
+    }
 
   const handlePaymentSuccess = () => {
     setDisplayLimit(LIMITS.MAX_INT);
@@ -104,7 +71,6 @@ function countWords(outputText: string, language: string): number {
           console.log(`File extension: ${fileUrl} ${fileExtension}`);
           let textItems;
           if (fileExtension === 'pdf') {
-            // textItems = await readPdf(fileUrl.split('.')[0]);
             textItems = await readPdf(fileUrl);
           } else if (fileExtension === 'docx') {
             textItems = await readDocx(fileUrl.split('.')[0]);
@@ -112,8 +78,9 @@ function countWords(outputText: string, language: string): number {
             throw new Error(`Unsupported file extension: ${fileExtension}`);
           }
           const lines = groupTextItemsIntoLines(textItems || []);
-          setLanguage(franc(lines.map(line => line.map(item => item.text).join(' ')).join('\n')));
-          await callStream(lines.map(line => line.map(item => item.text).join(' ')).join('\n'));
+          const reqLines = lines.map(line => line.map(item => item.text).join(' ')).join('\n');
+          setLanguage(franc(reqLines));
+          await postGptStreamReq(reqLines, setOutputText, 'questions');
       });
       await Promise.all(processingPromises);
     }

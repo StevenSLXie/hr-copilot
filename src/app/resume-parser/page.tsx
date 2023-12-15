@@ -17,72 +17,10 @@ import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { FootNote } from "components/FootNote";
+import { postGptJsonReq } from "../../pages/api/postGptJsonReq";
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-
-async function callStream(text: string) {
-    // Fetch the data from the serverless function
-  fetch('/api/callGptStream', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ prompt: 'evaluate the following resume in terms of at least 10 aspects' + text })
-  })
-  .then(response => {
-    // Read the response as a stream
-    const reader = response.body?.getReader();
-
-    // Read the next chunk of data
-    function readNextChunk(): Promise<void> {
-      return (reader as ReadableStreamDefaultReader).read().then(({ done, value }) => {
-        if (done) {
-          // The stream has ended
-          return;
-        }
-        // Convert the chunk to a string
-        const text = new TextDecoder().decode(value);
-        // Display the text
-        console.log(text);
-        // Read the next chunk
-        return readNextChunk();
-      });
-    }
-
-    // Start reading the stream
-    return readNextChunk();
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-}
-
-
-
-// Client-side code
-async function callGpt(text: string) {
-  const response = await fetch('/api/callGpt', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ text }),
-  });
-  if (!response.ok) {
-    return DUMMY_RESUME;
-  } else {
-    const jsonResponse = await response.json();
-    try {
-      const resumeContent = jsonResponse['text']['message']['content'].replace('```json\n', '').replace('\n```', '');
-      const resume: ResumeType = JSON.parse(resumeContent);
-      return resume;
-    } catch (error){
-      console.error('Error parsing resume:', error);
-      return DUMMY_RESUME;
-    }
-  }
-}
 
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
@@ -198,7 +136,7 @@ export default function ResumeParser() {
           // if too many lines, too rules directly
           const processLines = async (lines: string, lineCount: number) => {
             console.time(`callGptTime for ${lineCount} lines`);
-            const resumeAi = await callGpt(lines);
+            const resumeAi = await postGptJsonReq(lines);
             console.timeEnd(`callGptTime for ${lineCount} lines`);
             handleUpdateResumes(resumeAi.profile.name === DUMMY_RESUME.profile.name ? resumeRule : resumeAi);
           }
