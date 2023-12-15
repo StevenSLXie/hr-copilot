@@ -55,7 +55,7 @@ export default function ResumeQuestions() {
     }
   };
 
-  const KEYWORDS = ["Q: ","A: ","Guideline: "];
+  const KEYWORDS = ["Q: ","A: ","Guideline:"];
   const regex = new RegExp(`(${KEYWORDS.join('|')})`);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function ResumeQuestions() {
             }
 
             {outputText.length > 0 && outputText.split("A:").length > 4 && !isPaid && <Paragraph>
-              The above is the preview of the Q&A. The full report consist of {outputText.split("A:").length - 1} Q&A and has {countWords(outputText, language)} words. Pay just 1.99 USD to unlock the full Q&A set - that's less than the price of a StarBucks Americano!
+              The above is the preview of the Q&A. The report consist of {outputText.split("A:").length - 1} Q&A and get you fully prepared for your interview. Pay just 1.99 USD to unlock the full Q&A set - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}

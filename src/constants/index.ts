@@ -43,13 +43,13 @@ export const ENG_QUESTION_PROMPT = "You are a hiring manager interviewing an can
 "Based on candaiate's resume, ask 12 questions to deep dive into the candidate's experience, competency, weakness and suitability." +
 "Questions must be specific, more on candidate's past project experience. 2-3 of them can also be behavior questions. For tech roles, questions should be around candidate's specific skillsets such as programming languages" + 
 "For each question, an answer needs to be provided to help candidate address the question holistically and comprehensively." +
-"the return should be in the format of Q: text; A:text; Each Q&A should be around 100 words. There must be 12 questions no matter what.";
+"the return should be in the format of Q: text; A: text; Each Q&A should be around 100 words. There must be 12 questions no matter what.";
 
 export const CMN_QUESTION_PROMPT = "您是一名招聘经理，根据以下候选人简历，对候选人进行面试。" +
 "根据候选人的简历，提出12个问题，以深入了解候选人的经验，能力，缺点和是否胜任相关岗位。" +
 "问题必须具体，更多地关注候选人的过去项目经验。其中2-3个问题也可以是行为、性格方面的考察问题。对于技术角色，问题应围绕候选人的具体技能，例如编程语言" +
 "对于每个问题，都需要提供一个答案，以帮助候选人准备面试。" +
-"返回值的格式应如下 Q: text; A:text; 每个问题的答案应在100字左右。必须有12个问题。";
+"返回值的格式应如下 Q: text; A: text; 每个问题的答案应在100字左右。必须有12个问题。用中文问答";
 
 export const DUMMY_RESUME: Resume = {
   profile: {
