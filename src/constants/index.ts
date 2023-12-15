@@ -10,6 +10,7 @@ export const LIMITS = {
   DEFAULT_DISPLAY_LIMIT: 3,
   MAX_INT: 1000000,
   ANALYZER_PREVIEW_LIMIT: 0.3,
+  QUESTIONS_PREVIEW_LIMIT: 3,
 };
 
 export const VOUCHERS = [
@@ -32,17 +33,17 @@ export const ENG_ANALYZER_PROMPT = "Evaluate the following resume in terms of th
 export const CMN_ANALYZER_PROMPT = "请评估以下简历。" +
 "1. 整体评价：简历的整体能力评分为1-100分？必须有理由，格式为xx/100" +
 "2. 总结：总结应该是一句话，突出候选人的最大优势，卖点；" +
-"3. 缺点：指出候选人简历中的薄弱环节，至少4点，以及如何打磨简历以回避这些点。给出例子,必须尖锐和详细；" +
+"3. 缺点：指出候选人简历中的薄弱环节，至少5点，以及如何打磨简历以回避这些点。给出例子,必须尖锐和详细；" +
 "4. 优点：强调候选人擅长的2-3点，以及如何打磨简历以突出它们。给出简明的例子；" +
-"5. 面试问题：如果您是招聘经理，列出8个问题，以便深入了解候选人的弱点和具体的项目经验。必须具体。每个问题1-2行；" +
+"5. 面试问题：如果您是招聘经理，列出5个问题，以便深入了解候选人的弱点和具体的项目经验。必须具体。每个问题1-2行；" +
 "6. 预估薪水：根据简历，猜测候选人的薪水范围，分中国大陆一线城市和二线城市分别讨论。以及如果移民北美，可以期待的薪资。注意：中国大陆薪资远低于北美" +
 "返回值的格式应如下：整体评价：内容；总结：内容；缺点：内容；优点：内容；面试问题：内容；预估薪水：内容；按顺序输出。整体在800字左右";
 
 export const ENG_QUESTION_PROMPT = "You are a hiring manager interviewing an candaiate based on the following resume profile." +
 "Based on candaiate's resume, ask 5 questions to deep dive into the candidate's experience, competency, weakness and suitability." +
-"Questions must be specific, more on candidate's past project experience. For tech roles, questions should be around candidate's specific skillsets" + 
-"For each question, an overall guideline or strategy to answer that questions needs to be provided." +
-"the return should be in the format of Q: text; A:text; Each Q&A should be around 100 words";
+"Questions must be specific, more on candidate's past project experience. 2-3 of them can also be behavior questions. For tech roles, questions should be around candidate's specific skillsets such as programming languages" + 
+"For each question, an answer needs to be provided to help candidate address the question holistically and comprehensively." +
+"the return should be in the format of Q: text; A:text; Each Q&A should be around 100 words. There must be 5 questions no matter what.";
 
 export const DUMMY_RESUME: Resume = {
   profile: {

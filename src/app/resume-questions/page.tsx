@@ -94,12 +94,11 @@ export default function ResumeQuestions() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume Copilot
+              Get Personalized Mock-up Interview Q&A
             </Heading>
             <Paragraph>
-              - Struggling with job applications? Get instant feedbacks on your resume! <br />
-              - Uncover your strengths, weaknesses, salary expectations, and potential interview questions. <br />
-              - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied.
+              - Upload your pdf resumes and get personalized mock-up interview Q&A instantly <br />
+              - No signup, no subscription. Preview for free, pay only when satisfied.
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -111,28 +110,27 @@ export default function ResumeQuestions() {
             </div>
 
             {fileUrl !== '' && <Heading level={2} className="text-primary !mt-4">
-              Mock-up Questions and Answers
+              Mock-up Q&A 
             </Heading>}
             
             {
-              (isPaid ? outputText : outputText.slice(0, Math.floor(outputText.length * LIMITS.ANALYZER_PREVIEW_LIMIT)))
+            (isPaid ? outputText : outputText.split('A:').slice(0, LIMITS.QUESTIONS_PREVIEW_LIMIT).join('A:'))
                 .split(regex)
                 .map((part, index) => {
-                  const isKeyword = KEYWORDS.includes(part);
-                  return (
+                const isKeyword = KEYWORDS.includes(part);
+                return (
                     <React.Fragment key={index}>
                     <p className="text-gray-500 mt-2 text-md font-mono ml-3 mr-3">
-                      {isKeyword ? <strong>{part}</strong> : part }
+                        {isKeyword ? <strong>{part}</strong> : part }
                     </p>
                     {!isKeyword && fileUrl != '' && <hr className="border-gray-500 mt-4" />}
                     </React.Fragment>
-                  );
+                );
                 })
             }
 
-            {outputText.length > 0 && !isPaid && <Paragraph>
-              The above is the preview of the reports. The full report has {countWords(outputText, language)} words and consist of 6 parts: verdict, summary, weakness, strength, simulated questions and salary information. 
-              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!
+            {outputText.length > 0 && outputText.split("A:").length > 4 && !isPaid && <Paragraph>
+              The above is the preview of the Q&A. The full report consist of {outputText.split("A:").length - 1} Q&A and has {countWords(outputText, language)} words. Pay just 1.99 USD to unlock the full Q&A set - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}

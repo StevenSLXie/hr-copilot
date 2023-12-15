@@ -11,7 +11,6 @@ import type { Resume as ResumeType } from "lib/redux/types";
 import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { BULLET_POINTS } from 'lib/parse-resume-from-pdf/extract-resume-from-sections/lib/bullet-points';
-import { utils, writeFile } from 'xlsx';
 import { LIMITS, DUMMY_RESUME, VOUCHERS } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
