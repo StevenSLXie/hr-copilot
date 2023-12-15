@@ -3,19 +3,20 @@ import { useState, useEffect } from "react";
 import { readPdf, readDocx } from "lib/parse-resume-from-pdf/read-file";
 import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-items-into-lines";
 import { ResumeDropzone } from "components/ResumeDropzone";
-import { Heading, Link, Paragraph } from "components/documentation";
+import { Heading, Paragraph } from "components/documentation";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
-import { LIMITS, DUMMY_RESUME, VOUCHERS } from '../../constants';
+import { LIMITS, VOUCHERS } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { FootNote } from "components/FootNote";
 import React from "react";
 import {franc} from 'franc'
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export default function ResumeAnalyzer() {
+export default function ResumeQuestions() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [displayLimit, setDisplayLimit] = useState(LIMITS.DEFAULT_DISPLAY_LIMIT);
   const [isPaid, setIsPaid] = useState(false); 
@@ -31,7 +32,7 @@ export default function ResumeAnalyzer() {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ resumeText: text })
+    body: JSON.stringify({ resumeText: text, type: 'questions' })
   })
   .then(response => {
     // Read the response as a stream
@@ -87,9 +88,7 @@ function countWords(outputText: string, language: string): number {
     }
   };
 
-  const KEYWORDS = ["Summary:", "Strength:", "Weakness:", "Verdict:", "Questions:", "Salary:", 
-                    "总结：", "优点：", "缺点：", "面试问题：", "预估薪水：", "整体评价："];
-  // const regex = new RegExp(`(${KEYWORDS.join('|')})`, 'i');
+  const KEYWORDS = ["Q: ","A: ","Guideline: "];
   const regex = new RegExp(`(${KEYWORDS.join('|')})`);
 
   useEffect(() => {
@@ -145,7 +144,7 @@ function countWords(outputText: string, language: string): number {
             </div>
 
             {fileUrl !== '' && <Heading level={2} className="text-primary !mt-4">
-              Analysis Report
+              Mock-up Questions and Answers
             </Heading>}
             
             {
@@ -208,20 +207,7 @@ function countWords(outputText: string, language: string): number {
             } */}
 
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
-
-            <hr className="border-gray-500 mt-4" />
-            <p className="text-black-500 mt-2 text-xs">
-              - <span className="font-semibold"> If you encounter any payment issue, please write to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a>. </span>
-            </p>    
-            <p className="text-gray-500 mt-2 text-xs">
-              - Recruitment Copilot respects your privacy and never retains your data. At the same time, please note that part of the information in resumes is processed via the OpenAI API. OpenAI has their own data usage policies. For more details, please refer to OpenAI's <a href="https://openai.com/policies" target="_blank" rel="noopener noreferrer">data usage policy</a>.
-            </p>      
-            <p className="text-gray-500 mt-2 text-xs">
-              - Recruitment Copilot provides information for reference only and is not responsible for any misunderstandings or misinterpretations. Use this service at your own discretion.
-            </p> 
-            <p className="text-gray-500 mt-2 text-xs">
-              - Recruitment Copilot makes use of components in <a href="https://github.com/xitanggg/open-resume" target="_blank" rel="noopener noreferrer">Open Resume</a> and make substantial modifications. 
-            </p>  
+            <FootNote />
           </section>
         </div>
       </div>
