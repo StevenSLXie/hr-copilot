@@ -5,7 +5,7 @@ import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-it
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { Heading, Paragraph } from "components/documentation";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
-import { LIMITS, VOUCHERS } from '../../constants';
+import { LIMITS, VOUCHERS, PRICES } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -130,14 +130,15 @@ export default function ResumeQuestions() {
             }
 
             {outputText.length > 0 && outputText.split("A:").length > 4 && !isPaid && <Paragraph>
-              The above is the preview of the Q&A. The report consist of {outputText.split("A:").length - 1} Q&A and get you fully prepared for your interview. Pay just 1.99 USD to unlock the full Q&A set - that's less than the price of a StarBucks Americano!
+              The above is the preview of the Q&A. The report consist of {outputText.split("A:").length - 1} Q&A and get you fully prepared for your interview. <br></br> 
+              Pay just {PRICES.QUESTIONS} USD to unlock the full Q&A set - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
 
             {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
-              - Enter your card details and pay 1.99 USD to get the full report.
+              - Enter your card details and pay {PRICES.QUESTIONS} USD to get the full report.
             </p>}
 
             {/* {outputText.length > 0 && 
@@ -148,7 +149,7 @@ export default function ResumeQuestions() {
             {outputText.length > 0 && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={1.99} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
+                <CheckoutForm amount={PRICES.QUESTIONS} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
               </Elements>
             </div>
             }

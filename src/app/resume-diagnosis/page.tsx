@@ -5,7 +5,7 @@ import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-it
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { Heading, Link, Paragraph } from "components/documentation";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
-import { LIMITS, DUMMY_RESUME, VOUCHERS } from '../../constants';
+import { LIMITS, PRICES, VOUCHERS } from '../../constants';
 import CheckoutForm from "resume-parser/CheckoutForm";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -135,14 +135,14 @@ export default function ResumeAnalyzer() {
 
             {outputText.length > 0 && !isPaid && <Paragraph>
               The above is the preview of the reports. The full report has {countWords(outputText, language)} words and consist of 6 parts: verdict, summary, weakness, strength, simulated questions and salary information. 
-              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just 1.99 USD to get the full report - that's less than the price of a StarBucks Americano!
+              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just {PRICES.ANALYZER} USD to get the full report - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
 
             {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
-              - Enter your card details and pay 1.99 USD to get the full report.
+              - Enter your card details and pay {PRICES.ANALYZER} USD to get the full report.
             </p>}
 
             {/* {outputText.length > 0 && 
@@ -153,7 +153,7 @@ export default function ResumeAnalyzer() {
             {outputText.length > 0 && 
             <div id="checkoutButton">
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={1.99} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
+                <CheckoutForm amount={PRICES.ANALYZER} onPaymentSuccess={handlePaymentSuccess} onPaymentFailure={handlePaymentFailure}/>
               </Elements>
             </div>
             }
