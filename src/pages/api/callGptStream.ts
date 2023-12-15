@@ -16,7 +16,7 @@ export default async function POST(req: Request) {
   }else {
     prompt = franc(JSON.stringify(resumeText)) === 'cmn' ? CMN_ANALYZER_PROMPT : ENG_ANALYZER_PROMPT;
   }
-  console.log(prompt);
+  console.log(`Language: ${franc(JSON.stringify(resumeText))}, Type: ${type}`);
 
   // Ask OpenAI for a streaming completion given the prompt
   const response = await openai.chat.completions.create({

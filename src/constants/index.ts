@@ -14,7 +14,7 @@ export const LIMITS = {
 };
 
 export const PRICES = {
-  QUESTIONS: 1.49,
+  QUESTIONS: 2.99,
   ANALYZER : 1.99,
 }
 
