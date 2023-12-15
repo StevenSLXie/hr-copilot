@@ -12,6 +12,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import React from "react";
 import {franc} from 'franc'
 import { FootNote } from "components/FootNote";
+import { postGptStreamReq } from "../../pages/api/postGptStreamReq";
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -114,8 +115,9 @@ function countWords(outputText: string, language: string): number {
             throw new Error(`Unsupported file extension: ${fileExtension}`);
           }
           const lines = groupTextItemsIntoLines(textItems || []);
-          setLanguage(franc(lines.map(line => line.map(item => item.text).join(' ')).join('\n')));
-          await callStream(lines.map(line => line.map(item => item.text).join(' ')).join('\n'));
+          const reqLines = lines.map(line => line.map(item => item.text).join(' ')).join('\n');
+          setLanguage(franc(reqLines));
+          await postGptStreamReq(reqLines, setOutputText, 'analyzer');
       });
       await Promise.all(processingPromises);
     }
