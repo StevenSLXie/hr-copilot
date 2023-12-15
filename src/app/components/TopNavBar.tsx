@@ -18,26 +18,22 @@ export const TopNavBar = () => {
         isHomePage && "bg-dot"
       )}
     >
-      <div className="flex h-15 w-full items-center justify-between">
+      <div className="flex h-15 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 items-center justify-between">
         <Link href="/">
           <span className="sr-only">Recruitment Copilot</span>
-          <Image
-            src={logoSrc}
-            alt="HR Copilot"
-            className="object-contain h-12 w-full"
-            priority
-          />
         </Link>
         <nav
           aria-label="Site Nav Bar"
           className="flex items-center gap-2 text-sm font-medium"
         >
           {[
-            ["/resume-parser", "Parser"],
+            ["/resume-diagnosis", "Resume Analyzer"],
+            ["/resume-questions", "Interview Q&A"],
+            ["/resume-parser", "For Recruiters"],
           ].map(([href, text]) => (
             <Link
               key={text}
-              className="rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4"
+              className="rounded-md px-1.5 py-2 text-black-500 hover:bg-black-100 focus-visible:bg-gray-100 lg:px-4"
               href={href}
             >
               {text}
