@@ -94,10 +94,10 @@ export default function ResumeQuestions() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Get Personalized Mock-up Interview Q&A
+              Get Personalized Interview Q&A
             </Heading>
             <Paragraph>
-              - Upload your pdf resumes and get personalized mock-up interview Q&A instantly <br />
+              - Upload your pdf resumes and get personalized interview Q&A instantly <br />
               - No signup, no subscription. Preview for free, pay only when satisfied.
             </Paragraph>
             <div className="mt-3">
@@ -120,10 +120,10 @@ export default function ResumeQuestions() {
                 const isKeyword = KEYWORDS.includes(part);
                 return (
                     <React.Fragment key={index}>
+                    {part == 'Q: ' && fileUrl != '' && <hr className="border-gray-500 mt-4" />}
                     <p className="text-gray-500 mt-2 text-md font-mono ml-3 mr-3">
                         {isKeyword ? <strong>{part}</strong> : part }
                     </p>
-                    {!isKeyword && fileUrl != '' && <hr className="border-gray-500 mt-4" />}
                     </React.Fragment>
                 );
                 })
