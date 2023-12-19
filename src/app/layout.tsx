@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata = {
   title: "Recruitment Copilot | Get instant feedback on your resume",
   description:
-    "Experience our free trial, no signup, no monthly plan! Let Recruitment Copilot turbocharge your resume and skyrocket your job success rate",
+    "Resume Review | Resume Feedback | Resume Analysis | Free trial, no signup, no subscription",
 };
 
 export default function RootLayout({
