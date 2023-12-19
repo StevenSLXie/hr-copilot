@@ -55,7 +55,7 @@ export default function ResumeAnalyzer() {
     }
   };
 
-  const KEYWORDS = ["Summary:", "Strength:", "Weakness:", "Verdict:", "Questions:", "Salary:", 
+  const KEYWORDS = ["Summary:", "Strength:", "Weakness:", "Verdict:", "Questions:", "Salary:", "Self-introduction:",
                     "总结：", "优点：", "缺点：", "面试问题：", "预估薪水：", "整体评价："];
   // const regex = new RegExp(`(${KEYWORDS.join('|')})`, 'i');
   const regex = new RegExp(`(${KEYWORDS.join('|')})`);
@@ -100,9 +100,10 @@ export default function ResumeAnalyzer() {
               Resume Copilot
             </Heading>
             <Paragraph>
-              - Struggling with job applications? Get instant feedbacks on your resume! <br />
-              - Uncover your strengths, weaknesses, salary expectations, and potential interview questions. <br />
-              - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied.
+              🤔 Struggling with job applications? Get instant feedbacks on your resume! <br />
+              💪 - Uncover your weaknesses and strengths; Explore strategies to enhance your resume. <br />
+              📝 - The full report also includes a tailored self-introduction script, simulated interview questions and personalized salary estimation. <br />
+              📤 - Upload your PDF resume now. No signup, no subscription. Preview for free, pay only when satisfied.
             </Paragraph>
             <div className="mt-3">
               <ResumeDropzone
@@ -134,8 +135,8 @@ export default function ResumeAnalyzer() {
             }
 
             {outputText.length > 0 && !isPaid && <Paragraph>
-              The above is the preview of the reports. The full report has {countWords(outputText, language)} words and consist of 6 parts: verdict, summary, weakness, strength, simulated questions and salary information. 
-              It helps you polish your resumes and generate questions that you will likely get asked by an interviewer. Pay just {PRICES.ANALYZER} USD to get the full report - that's less than the price of a StarBucks Americano!
+              The above is the preview of the reports. The full report has {countWords(outputText, language)} words and consist of 7 parts: verdict, summary, weakness, strength, self-introduction, simulated questions and salary information. 
+              Pay just {PRICES.ANALYZER} USD to unlock the full report - that's less than the price of a StarBucks Americano!
             </Paragraph> }
 
             {outputText.length > 0 && <hr className="border-gray-500 mt-4" />}
