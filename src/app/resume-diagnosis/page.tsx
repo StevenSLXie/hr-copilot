@@ -13,6 +13,7 @@ import React from "react";
 import {franc} from 'franc'
 import { FootNote } from "components/FootNote";
 import { postGptStreamReq } from "../../pages/api/postGptStreamReq";
+import { ShareButton } from "components/ShareButton";
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -178,7 +179,9 @@ export default function ResumeAnalyzer() {
             } */}
 
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
+            
 
+            <ShareButton />
             <FootNote />
           </section>
         </div>
