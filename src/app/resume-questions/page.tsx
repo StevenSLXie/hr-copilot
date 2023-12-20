@@ -13,6 +13,7 @@ import { FootNote } from "components/FootNote";
 import React from "react";
 import {franc} from 'franc'
 import { postGptStreamReq } from "../../pages/api/postGptStreamReq";
+import { UserButton } from "@clerk/nextjs";
 
 const defaultFileUrl = "";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -177,6 +178,9 @@ export default function ResumeQuestions() {
           </section>
         </div>
       </div>
+      <div className="h-screen">
+      <UserButton afterSignOutUrl="/"/>
+    </div>
     </main>
   );
 }

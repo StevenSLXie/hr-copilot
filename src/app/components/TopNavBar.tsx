@@ -5,6 +5,7 @@ import Image from "next/image";
 import Head from 'next/head';
 import logoSrc from "public/logo.jpeg";
 import { cx } from "lib/cx";
+import { UserButton } from "@clerk/nextjs";
 
 export const TopNavBar = () => {
   const pathName = usePathname();
@@ -22,10 +23,14 @@ export const TopNavBar = () => {
         <Link href="/">
           <span className="sr-only">Recruitment Copilot</span>
         </Link>
+        
         <nav
           aria-label="Site Nav Bar"
           className="flex items-center gap-2 text-sm font-medium"
         >
+          <div>
+            <UserButton afterSignOutUrl="/"/>
+          </div>
           {[
             ["/resume-diagnosis", "Resume Analyzer"],
             ["/resume-questions", "Interview Q&A"],
