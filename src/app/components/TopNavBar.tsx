@@ -28,9 +28,9 @@ export const TopNavBar = () => {
           aria-label="Site Nav Bar"
           className="flex items-center gap-2 text-sm font-medium"
         >
-          <div>
+          {/* <div>
             <UserButton afterSignOutUrl="/"/>
-          </div>
+          </div> */}
           {[
             ["/resume-diagnosis", "Resume Analyzer"],
             ["/resume-questions", "Interview Q&A"],
