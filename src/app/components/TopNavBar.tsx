@@ -5,7 +5,6 @@ import Image from "next/image";
 import Head from 'next/head';
 import logoSrc from "public/logo.jpeg";
 import { cx } from "lib/cx";
-import { UserButton } from "@clerk/nextjs";
 
 export const TopNavBar = () => {
   const pathName = usePathname();
