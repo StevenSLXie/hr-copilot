@@ -179,8 +179,7 @@ export default function ResumeAnalyzer() {
             </div>
             }
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
-            
-
+            {isPaid && <p className="text-green-500 mt-2 text-sm">Thank you for using Recruitment Copilot! Drop an email to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> to stay updated for more features!</p>}
             <ShareButton />
             <FootNote />
           </section>
