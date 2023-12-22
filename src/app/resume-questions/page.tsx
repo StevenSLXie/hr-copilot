@@ -27,16 +27,16 @@ export default function ResumeQuestions() {
   const [language, setLanguage] = useState('und');
 
     function countWords(outputText: string, language: string): number {
-    if (language === 'eng') {
-        // English: count the number of spaces and add 1
-        return outputText.split(' ').length;
-    } else if (language === 'cmn') {
-        // Chinese: count the number of characters
-        return outputText.length;
-    } else {
-        // For other languages, return 0 or handle them appropriately
-        return 0;
-    }
+      if (language === 'eng') {
+          // English: count the number of spaces and add 1
+          return outputText.split(' ').length;
+      } else if (language === 'cmn') {
+          // Chinese: count the number of characters
+          return outputText.length;
+      } else {
+          // For other languages, return 0 or handle them appropriately
+          return 0;
+      }
     }
 
   const handlePaymentSuccess = () => {
@@ -142,10 +142,10 @@ export default function ResumeQuestions() {
               - Enter your card details and pay {PRICES.QUESTIONS} USD to get the full report.
             </p>}
 
-            {outputText.length > 0 && 
+            {/* {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
               - OR if you have been given a coupon, please enter your coupon code
-            </p>}
+            </p>} */}
 
             {outputText.length > 0 && outputText.split("A:").length > 4 && 
             <div id="checkoutButton">
@@ -155,7 +155,7 @@ export default function ResumeQuestions() {
             </div>
             }
 
-            {outputText.length > 0 && 
+            {/* {outputText.length > 0 && 
             <div id="voucherInput" className="flex items-center mt-2">
                 <input 
                   type="text" 
@@ -171,7 +171,7 @@ export default function ResumeQuestions() {
                   Redeem Coupon
                 </button>
             </div>
-            }
+            } */}
 
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
             <FootNote />
