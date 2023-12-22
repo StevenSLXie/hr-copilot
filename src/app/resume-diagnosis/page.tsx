@@ -53,6 +53,7 @@ export default function ResumeAnalyzer() {
     if (VOUCHERS.includes(voucherCode)) {
       setDisplayLimit(LIMITS.MAX_INT);
       setIsPaid(true);
+      console.log(`Voucher code redeemed: ${voucherCode}`);
     }
   };
 
@@ -147,10 +148,10 @@ export default function ResumeAnalyzer() {
               - Enter your card details and pay {PRICES.ANALYZER} USD to get the full report.
             </p>}
 
-            {/* {outputText.length > 0 && 
+            {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
-              - If you have been given a coupon, please enter your coupon code
-            </p>} */}
+              - OR if you have been given a coupon, please enter your coupon code
+            </p>}
 
             {outputText.length > 0 && 
             <div id="checkoutButton">
@@ -160,7 +161,7 @@ export default function ResumeAnalyzer() {
             </div>
             }
 
-            {/* {outputText.length > 0 && 
+            {outputText.length > 0 && 
             <div id="voucherInput" className="flex items-center mt-2">
                 <input 
                   type="text" 
@@ -176,8 +177,7 @@ export default function ResumeAnalyzer() {
                   Redeem Coupon
                 </button>
             </div>
-            } */}
-
+            }
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
             
 

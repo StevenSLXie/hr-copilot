@@ -52,6 +52,7 @@ export default function ResumeQuestions() {
     if (VOUCHERS.includes(voucherCode)) {
       setDisplayLimit(LIMITS.MAX_INT);
       setIsPaid(true);
+      console.log(`Voucher code redeemed: ${voucherCode}`);
     }
   };
 
@@ -141,10 +142,10 @@ export default function ResumeQuestions() {
               - Enter your card details and pay {PRICES.QUESTIONS} USD to get the full report.
             </p>}
 
-            {/* {outputText.length > 0 && 
+            {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
-              - If you have been given a coupon, please enter your coupon code
-            </p>} */}
+              - OR if you have been given a coupon, please enter your coupon code
+            </p>}
 
             {outputText.length > 0 && outputText.split("A:").length > 4 && 
             <div id="checkoutButton">
@@ -154,7 +155,7 @@ export default function ResumeQuestions() {
             </div>
             }
 
-            {/* {outputText.length > 0 && 
+            {outputText.length > 0 && 
             <div id="voucherInput" className="flex items-center mt-2">
                 <input 
                   type="text" 
@@ -170,7 +171,7 @@ export default function ResumeQuestions() {
                   Redeem Coupon
                 </button>
             </div>
-            } */}
+            }
 
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
             <FootNote />
