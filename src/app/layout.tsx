@@ -1,7 +1,6 @@
 import "globals.css";
 import { TopNavBar } from "components/TopNavBar";
 import { Analytics } from "@vercel/analytics/react";
-import { ClerkProvider } from '@clerk/nextjs'
 
 export const metadata = {
   title: "Recruitment Copilot | Get instant feedback on your resume",
@@ -15,7 +14,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
     <html lang="en">
       <body>
         <TopNavBar />
@@ -23,6 +21,5 @@ export default function RootLayout({
         <Analytics />
       </body>
     </html>
-    </ClerkProvider>
   );
 }
