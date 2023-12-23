@@ -25,7 +25,8 @@ export const VOUCHERS = [
   'G3H4I5J6K7L8M9N0O1P2Q3R4S5T6U7V8',
   'W9X0Y1Z2A3B4C5D6E7F8G9H0I1J2K3L4',
   'M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8A9B0',
-  'V2EX_recruitment-copilot.com'
+  'V2EX_recruitment-copilot.com',
+  'data_zach_Q7r8s3t0U0V2W3g4'
 ];
 
 export const ENG_ANALYZER_PROMPT = "Evaluate the following resume in terms of the following." + 
