@@ -99,7 +99,7 @@ export default function ResumeAnalyzer() {
           <FlexboxSpacer maxWidth={45} className="hidden sm:block" />
           <section className="max-w-full sm:max-w-[1920px] grow">
             <Heading className="text-primary !mt-4">
-              Resume Copilot
+              Get Your Resume Reviewed
             </Heading>
             <Paragraph>
               🤔 Struggling with job applications? Get instant feedbacks on your resume! <br />
@@ -148,10 +148,10 @@ export default function ResumeAnalyzer() {
               - Enter your card details and pay {PRICES.ANALYZER} USD to get the full report.
             </p>}
 
-            {outputText.length > 0 && 
+            {/* {outputText.length > 0 && 
             <p className="text-gray-500 mt-2 text-sm font-semibold">
               - OR if you have been given a coupon, please enter your coupon code
-            </p>}
+            </p>} */}
 
             {outputText.length > 0 && 
             <div id="checkoutButton">
@@ -161,7 +161,7 @@ export default function ResumeAnalyzer() {
             </div>
             }
 
-            {outputText.length > 0 && 
+            {/* {outputText.length > 0 && 
             <div id="voucherInput" className="flex items-center mt-2">
                 <input 
                   type="text" 
@@ -177,7 +177,7 @@ export default function ResumeAnalyzer() {
                   Redeem Coupon
                 </button>
             </div>
-            }
+            } */}
             {isPaymentFailed && <p className="text-red-500 mt-2 text-xs">Payment failed! Please check you credit card credentials</p>}
             {isPaid && <p className="text-green-500 mt-2 text-sm">Thank you for using Recruitment Copilot! Drop an email to <a href="mailto:hr.copilot.beta@gmail.com">hr.copilot.beta@gmail.com</a> to stay updated for more features!</p>}
             <ShareButton />
